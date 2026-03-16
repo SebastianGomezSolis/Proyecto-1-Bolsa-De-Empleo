@@ -17,6 +17,11 @@ public class Habilidad {
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "oferente_identificacion", nullable = false)
+    private Oferente oferente;
+
+    @NotNull
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "caracteristica_id", nullable = false)
     private Caracteristica caracteristica;
 

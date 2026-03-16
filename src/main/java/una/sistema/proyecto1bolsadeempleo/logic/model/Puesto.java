@@ -7,6 +7,7 @@ import lombok.Setter;
 import org.hibernate.annotations.ColumnDefault;
 
 import java.time.Instant;
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,10 +29,8 @@ public class Puesto {
     private Double salario;
 
     @NotNull
-    @ColumnDefault("'publico'")
-    @Lob
-    @Column(name = "tipoPublicacion", nullable = false)
-    private String tipoPublicacion;
+    @Column(name = "tipoPublicacion", nullable = false, length = 20)
+    private String tipoPublicacion = "publico";
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
@@ -44,9 +43,17 @@ public class Puesto {
     private Boolean activo;
 
     @NotNull
-    @ColumnDefault("CURRENT_TIMESTAMP")
-    @Column(name = "fechaRegistro", nullable = false)
+    @Column(name = "fechaRegistro", nullable = false, updatable = false)
     private Instant fechaRegistro;
 
+    @PrePersist
+    public void prePersist() {
+        if (fechaRegistro == null) {
+            fechaRegistro = Instant.now();
+        }
+    }
+
+    @OneToMany(mappedBy = "puesto", fetch = FetchType.LAZY)
+    private List<PuestoCaracteristica> caracteristicas;
 
 }

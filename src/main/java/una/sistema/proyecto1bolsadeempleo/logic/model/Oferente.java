@@ -27,9 +27,10 @@ public class Oferente {
     @Column(name = "primerApellido", nullable = false, length = 100)
     private String primerApellido;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "nacionalidad")
-    private Nacionalidad nacionalidad;
+    @Size(max = 50)
+    @NotNull
+    @Column(name = "nacionalidad", nullable = false, length = 50)
+    private String nacionalidad;
 
     @Size(max = 20)
     @Column(name = "telefono", length = 20)

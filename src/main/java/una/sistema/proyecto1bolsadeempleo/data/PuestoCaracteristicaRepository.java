@@ -1,4 +1,13 @@
 package una.sistema.proyecto1bolsadeempleo.data;
 
-public interface PuestoCaracteristicaRepository {
+import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
+import una.sistema.proyecto1bolsadeempleo.logic.model.PuestoCaracteristica;
+
+import java.util.List;
+
+@Repository
+public interface PuestoCaracteristicaRepository extends CrudRepository<PuestoCaracteristica, Integer> {
+    // Todas las características requeridas de un puesto
+    List<PuestoCaracteristica> findByPuestoId(Integer puestoId);
 }
