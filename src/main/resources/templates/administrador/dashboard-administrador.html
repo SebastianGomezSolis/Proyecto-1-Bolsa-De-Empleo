@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>Dashboard Administrador</title>
-    <i class="fa-sharp-duotone fa-solid fa-360-degrees"></i>
+    <title>Admin - Dashboard</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -14,19 +12,32 @@
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center w-100">
-            <a class="navbar-brand mb-0 h1 px-2" href="#" style="font-size:1.1rem;">Bolsa de Empleo</a>
+            <a class="navbar-brand mb-0 h1 px-2 d-flex align-items-center" th:href="@{/}" style="font-size:1.1rem;">
+                <img th:src="@{/images/bolsaEmpleo.png}" alt="Logo" style="height:28px; width:auto; margin-right:8px;" />
+                <span>BolsaEmpleo</span>
+            </a>
             <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#" style="font-size:0.95rem;">Buscar puestos</a>
+                    <a class="nav-link active" th:href="@{/admin/dashboard}" style="font-size:0.9rem;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Empresa</a>
+                    <a class="nav-link" th:href="@{/admin/empresas/pendientes}" style="font-size:0.9rem;">Empresas pendientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Oferente</a>
+                    <a class="nav-link" th:href="@{/admin/oferentes/pendientes}" style="font-size:0.9rem;">Oferentes pendientes</a>
                 </li>
-                <li class="nav-item ms-auto me-3">
-                    <a class="nav-link" href="" style="font-size:0.95rem;">Login</a>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/caracteristicas}" style="font-size:0.9rem;">Características</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/reportes}" style="font-size:0.9rem;">Reportes</a>
+                </li>
+                <li class="nav-item ms-auto d-flex align-items-center me-2">
+                    <span class="text-white me-3" style="font-size:0.9rem;"
+                          th:text="${#authentication.name}">admin@correo.com</span>
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Salir</button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -34,26 +45,24 @@
 </nav>
 
 <!-- MAIN -->
-<main class="container my-4 flex-grow-1">
-
-
+<main class="container my-4 flex-grow-1 d-flex align-items-center justify-content-center">
+    <div class="text-center">
+        <h3>Administrador</h3>
+        <p class="text-muted mb-4">Aprobaciones, catálogo de características y reportes.</p>
+        <div class="d-flex gap-2 justify-content-center flex-wrap">
+            <a th:href="@{/admin/empresas/pendientes}" class="btn btn-dark">Empresas pendientes</a>
+            <a th:href="@{/admin/oferentes/pendientes}" class="btn btn-dark">Oferentes pendientes</a>
+            <a th:href="@{/admin/caracteristicas}" class="btn btn-dark">Características</a>
+            <a th:href="@{/admin/reportes}" class="btn btn-dark">Reportes</a>
+        </div>
+    </div>
 </main>
 
 <!-- FOOTER -->
 <footer class="bg-dark text-white p-3 mt-auto" style="font-size: 0.9rem;">
     <div class="container d-flex justify-content-between">
-        <div>
-            <b>Bolsa de Empleo</b>
-            <br>
-            Total Soft Inc.
-        </div>
-        <div>
-            <div>
-                Contacto: info@bolsaempleo.local
-                <br>
-                Créditos: Equipo de desarrollo
-            </div>
-        </div>
+        <div><b>Bolsa de Empleo</b><br>Total Soft Inc.</div>
+        <div>Contacto: info@bolsaempleo.local<br>Créditos: Equipo de desarrollo</div>
     </div>
 </footer>
 

@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>Reportes</title>
-    <i class="fa-sharp-duotone fa-solid fa-360-degrees"></i>
+    <title>Admin - Reportes</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -14,19 +12,32 @@
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center w-100">
-            <a class="navbar-brand mb-0 h1 px-2" href="#" style="font-size:1.1rem;">Bolsa de Empleo</a>
+            <a class="navbar-brand mb-0 h1 px-2 d-flex align-items-center" th:href="@{/}" style="font-size:1.1rem;">
+                <img th:src="@{/images/bolsaEmpleo.png}" alt="Logo" style="height:28px; width:auto; margin-right:8px;" />
+                <span>BolsaEmpleo</span>
+            </a>
             <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#" style="font-size:0.95rem;">Buscar puestos</a>
+                    <a class="nav-link" th:href="@{/admin/dashboard}" style="font-size:0.9rem;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Empresa</a>
+                    <a class="nav-link" th:href="@{/admin/empresas/pendientes}" style="font-size:0.9rem;">Empresas pendientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Oferente</a>
+                    <a class="nav-link" th:href="@{/admin/oferentes/pendientes}" style="font-size:0.9rem;">Oferentes pendientes</a>
                 </li>
-                <li class="nav-item ms-auto me-3">
-                    <a class="nav-link" href="" style="font-size:0.95rem;">Login</a>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/caracteristicas}" style="font-size:0.9rem;">Características</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/reportes}" style="font-size:0.9rem;">Reportes</a>
+                </li>
+                <li class="nav-item ms-auto d-flex align-items-center me-2">
+                    <span class="text-white me-3" style="font-size:0.9rem;"
+                          th:text="${#authentication.name}">admin@correo.com</span>
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Salir</button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -36,24 +47,62 @@
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
 
+    <h3 class="mb-1">Reportes</h3>
+    <p class="text-muted mb-4" style="font-size:0.9rem;">
+        Generá reportes de puestos publicados por mes y año en formato PDF.
+    </p>
+
+    <div class="border rounded p-4 bg-white" style="max-width: 450px;">
+        <h6 class="fw-bold mb-3">Reporte de puestos por mes</h6>
+        <p class="text-muted mb-3" style="font-size:0.88rem;">
+            Seleccioná el mes y el año para descargar el reporte en PDF con todos los puestos publicados en ese período.
+        </p>
+
+        <form th:action="@{/admin/reportes/pdf}" method="get">
+            <div class="row g-3 mb-3">
+
+                <!-- Mes -->
+                <div class="col">
+                    <label for="mes" class="form-label fw-semibold">Mes</label>
+                    <select id="mes" name="mes" class="form-select" required>
+                        <option value="1">Enero</option>
+                        <option value="2">Febrero</option>
+                        <option value="3">Marzo</option>
+                        <option value="4">Abril</option>
+                        <option value="5">Mayo</option>
+                        <option value="6">Junio</option>
+                        <option value="7">Julio</option>
+                        <option value="8">Agosto</option>
+                        <option value="9">Septiembre</option>
+                        <option value="10">Octubre</option>
+                        <option value="11">Noviembre</option>
+                        <option value="12">Diciembre</option>
+                    </select>
+                </div>
+
+                <!-- Año -->
+                <div class="col">
+                    <label for="anio" class="form-label fw-semibold">Año</label>
+                    <input type="number" id="anio" name="anio"
+                           class="form-control" value="2026"
+                           min="2020" max="2099" required />
+                </div>
+
+            </div>
+
+            <button type="submit" class="btn btn-dark">
+                Descargar PDF
+            </button>
+        </form>
+    </div>
 
 </main>
 
 <!-- FOOTER -->
 <footer class="bg-dark text-white p-3 mt-auto" style="font-size: 0.9rem;">
     <div class="container d-flex justify-content-between">
-        <div>
-            <b>Bolsa de Empleo</b>
-            <br>
-            Total Soft Inc.
-        </div>
-        <div>
-            <div>
-                Contacto: info@bolsaempleo.local
-                <br>
-                Créditos: Equipo de desarrollo
-            </div>
-        </div>
+        <div><b>Bolsa de Empleo</b><br>Total Soft Inc.</div>
+        <div>Contacto: info@bolsaempleo.local<br>Créditos: Equipo de desarrollo</div>
     </div>
 </footer>
 

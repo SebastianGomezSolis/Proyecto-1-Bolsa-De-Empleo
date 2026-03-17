@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>Características</title>
-    <i class="fa-sharp-duotone fa-solid fa-360-degrees"></i>
+    <title>Admin - Características</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -14,19 +12,32 @@
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center w-100">
-            <a class="navbar-brand mb-0 h1 px-2" href="#" style="font-size:1.1rem;">Bolsa de Empleo</a>
+            <a class="navbar-brand mb-0 h1 px-2 d-flex align-items-center" th:href="@{/}" style="font-size:1.1rem;">
+                <img th:src="@{/images/bolsaEmpleo.png}" alt="Logo" style="height:28px; width:auto; margin-right:8px;" />
+                <span>BolsaEmpleo</span>
+            </a>
             <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#" style="font-size:0.95rem;">Buscar puestos</a>
+                    <a class="nav-link" th:href="@{/admin/dashboard}" style="font-size:0.9rem;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Empresa</a>
+                    <a class="nav-link" th:href="@{/admin/empresas/pendientes}" style="font-size:0.9rem;">Empresas pendientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Oferente</a>
+                    <a class="nav-link" th:href="@{/admin/oferentes/pendientes}" style="font-size:0.9rem;">Oferentes pendientes</a>
                 </li>
-                <li class="nav-item ms-auto me-3">
-                    <a class="nav-link" href="" style="font-size:0.95rem;">Login</a>
+                <li class="nav-item">
+                    <a class="nav-link active" th:href="@{/admin/caracteristicas}" style="font-size:0.9rem;">Características</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/admin/reportes}" style="font-size:0.9rem;">Reportes</a>
+                </li>
+                <li class="nav-item ms-auto d-flex align-items-center me-2">
+                    <span class="text-white me-3" style="font-size:0.9rem;"
+                          th:text="${#authentication.name}">admin@correo.com</span>
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Salir</button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -36,24 +47,97 @@
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
 
+    <h3 class="mb-4">Características</h3>
 
+    <div class="row g-4">
+
+        <!-- Columna izquierda: navegador jerárquico -->
+        <div class="col-md-6">
+            <div class="border rounded p-3 bg-white">
+
+                <!-- Ruta breadcrumb -->
+                <div class="mb-2">
+                    <span class="fw-semibold">Ruta:</span>
+                    <span class="ms-1">
+                        <a th:href="@{/admin/caracteristicas}"
+                           class="badge text-bg-light border text-decoration-none text-dark">Raíces</a>
+                        <span th:each="nodo : ${ruta}">
+                            <span class="text-muted mx-1">/</span>
+                            <a th:href="@{/admin/caracteristicas(actualId=${nodo.id})}"
+                               class="badge text-bg-light border text-decoration-none text-dark"
+                               th:text="${nodo.nombre}"></a>
+                        </span>
+                    </span>
+                </div>
+
+                <!-- Descripción del nivel actual -->
+                <p class="text-muted mb-3" style="font-size:0.88rem;">
+                    Subcategorías de:
+                    <strong th:text="${actual != null ? actual.nombre : 'raíces'}"></strong>
+                </p>
+
+                <!-- Lista de subcategorías -->
+                <div th:each="sub : ${subcategorias}"
+                     class="d-flex justify-content-between align-items-center border rounded px-3 py-2 mb-2 bg-light">
+                    <span th:text="${sub.nombre}" class="fw-semibold"></span>
+                    <a th:href="@{/admin/caracteristicas(actualId=${sub.id})}"
+                       class="btn btn-outline-secondary btn-sm">Entrar</a>
+                </div>
+
+                <div th:if="${#lists.isEmpty(subcategorias)}"
+                     class="text-muted" style="font-size:0.88rem;">
+                    Esta categoría no tiene subcategorías.
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Columna derecha: formulario agregar -->
+        <div class="col-md-4">
+            <div class="border rounded p-3 bg-white">
+                <h6 class="fw-bold mb-3">Agregar Característica</h6>
+
+                <form th:action="@{/admin/caracteristicas/crear}" method="post">
+
+                    <div class="row g-3 align-items-end mb-3">
+                        <!-- Nombre -->
+                        <div class="col">
+                            <label for="nombre" class="form-label">Nombre</label>
+                            <input type="text" id="nombre" name="nombre"
+                                   class="form-control" required />
+                        </div>
+
+                        <!-- Padre -->
+                        <div class="col">
+                            <label for="padreId" class="form-label">Padre</label>
+                            <select id="padreId" name="padreId" class="form-select">
+                                <option value="">(sin padre)</option>
+                                <option th:each="c : ${todas}"
+                                        th:value="${c.id}"
+                                        th:text="${c.nombre}"
+                                        th:selected="${actual != null and actual.id == c.id}">
+                                </option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Guardar actualId para volver al mismo nivel -->
+                    <input type="hidden" name="actualId"
+                           th:value="${actual != null ? actual.id : null}" />
+
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
 </main>
 
 <!-- FOOTER -->
 <footer class="bg-dark text-white p-3 mt-auto" style="font-size: 0.9rem;">
     <div class="container d-flex justify-content-between">
-        <div>
-            <b>Bolsa de Empleo</b>
-            <br>
-            Total Soft Inc.
-        </div>
-        <div>
-            <div>
-                Contacto: info@bolsaempleo.local
-                <br>
-                Créditos: Equipo de desarrollo
-            </div>
-        </div>
+        <div><b>Bolsa de Empleo</b><br>Total Soft Inc.</div>
+        <div>Contacto: info@bolsaempleo.local<br>Créditos: Equipo de desarrollo</div>
     </div>
 </footer>
 

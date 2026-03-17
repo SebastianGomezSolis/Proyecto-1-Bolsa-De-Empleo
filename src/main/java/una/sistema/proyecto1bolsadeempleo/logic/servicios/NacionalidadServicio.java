@@ -1,5 +1,6 @@
 package una.sistema.proyecto1bolsadeempleo.logic.servicios;
 
+import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NacionalidadServicio {
+
     private List<Nacionalidad> nacionalidades = new ArrayList<>();
 
     public NacionalidadServicio() {
@@ -19,33 +21,34 @@ public class NacionalidadServicio {
     }
 
     public void cargarNacionalidades() {
-
         try {
             FileInputStream file = new FileInputStream(new File("nacionalidades.xlsx"));
             Workbook workbook = new XSSFWorkbook(file);
             Sheet sheet = workbook.getSheetAt(0);
+            DataFormatter formatter = new DataFormatter();
 
             for (Row row : sheet) {
+                if (row.getRowNum() == 0) continue;
 
-                if (row.getRowNum() == 0) continue; // saltar encabezado
+                String iso               = formatter.formatCellValue(row.getCell(0));
+                String nombre            = formatter.formatCellValue(row.getCell(2));
+                String iso3              = formatter.formatCellValue(row.getCell(3));
+                String codigoNumeroStr   = formatter.formatCellValue(row.getCell(4));
+                String codigoTelefonoStr = formatter.formatCellValue(row.getCell(5));
+                String descripcion       = "";
 
-                int codigoNumero = (int) row.getCell(0).getNumericCellValue();
-                int codigoTelefono = (int) row.getCell(1).getNumericCellValue();
-                String iso3 = row.getCell(2).getStringCellValue();
-                String descripcion = row.getCell(3).getStringCellValue();
-                String iso = row.getCell(4).getStringCellValue();
-                String nombre = row.getCell(5).getStringCellValue();
+                if (nombre == null || nombre.isEmpty()) continue;
 
-                Nacionalidad nacionalidad = new Nacionalidad(
-                        codigoNumero,
-                        codigoTelefono,
-                        iso3,
-                        descripcion,
-                        iso,
-                        nombre
-                );
+                int codigoNumero   = 0;
+                int codigoTelefono = 0;
+                try {
+                    if (!codigoNumeroStr.isEmpty())
+                        codigoNumero = (int) Double.parseDouble(codigoNumeroStr);
+                    if (!codigoTelefonoStr.isEmpty())
+                        codigoTelefono = (int) Double.parseDouble(codigoTelefonoStr);
+                } catch (NumberFormatException e) {}
 
-                nacionalidades.add(nacionalidad);
+                nacionalidades.add(new Nacionalidad(codigoNumero, codigoTelefono, iso3, descripcion, iso, nombre));
             }
 
             workbook.close();
@@ -61,13 +64,11 @@ public class NacionalidadServicio {
     }
 
     public Nacionalidad buscarPorIso(String iso) {
-
         for (Nacionalidad n : nacionalidades) {
             if (n.getIso().equalsIgnoreCase(iso)) {
                 return n;
             }
         }
-
         return null;
     }
 }

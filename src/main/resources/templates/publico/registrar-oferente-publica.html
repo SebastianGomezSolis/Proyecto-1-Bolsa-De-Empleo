@@ -71,7 +71,13 @@
 
                         <div class="mb-3">
                             <label class="form-label">Nacionalidad</label>
-                            <input type="text" class="form-control" th:field="*{nacionalidad}" required />
+                            <select class="form-select" th:field="*{nacionalidad}" required>
+                                <option value="">Seleccione una nacionalidad...</option>
+                                <option th:each="nac : ${nacionalidades}"
+                                        th:value="${nac.nombre}"
+                                        th:text="${nac.nombre}">
+                                </option>
+                            </select>
                         </div>
 
                         <div class="mb-3">

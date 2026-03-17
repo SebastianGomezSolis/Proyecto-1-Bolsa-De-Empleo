@@ -1,12 +1,10 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8" />
-    <title>Mi CV</title>
-    <i class="fa-sharp-duotone fa-solid fa-360-degrees"></i>
+    <title>Oferente - Mi CV</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="d-flex flex-column min-vh-100 bg-light">
 
@@ -14,19 +12,29 @@
 <nav class="navbar navbar-dark bg-dark">
     <div class="container-fluid p-0">
         <div class="d-flex align-items-center w-100">
-            <a class="navbar-brand mb-0 h1 px-2" href="#" style="font-size:1.1rem;">Bolsa de Empleo</a>
+            <a class="navbar-brand mb-0 h1 px-2 d-flex align-items-center" th:href="@{/}" style="font-size:1.1rem;">
+                <img th:src="@{/images/bolsaEmpleo.png}" alt="Logo" style="height:28px; width:auto; margin-right:8px;" />
+                <span>BolsaEmpleo</span>
+            </a>
             <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="#" style="font-size:0.95rem;">Buscar puestos</a>
+                    <a class="nav-link" th:href="@{/oferente/dashboard}" style="font-size:0.9rem;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Empresa</a>
+                    <a class="nav-link" th:href="@{/oferente/habilidades}" style="font-size:0.9rem;">Mis habilidades</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" style="font-size:0.95rem;">Registro Oferente</a>
+                    <a class="nav-link active" th:href="@{/oferente/cv}" style="font-size:0.9rem;">Mi CV</a>
                 </li>
-                <li class="nav-item ms-auto me-3">
-                    <a class="nav-link" href="" style="font-size:0.95rem;">Login</a>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/puestos/buscar}" style="font-size:0.9rem;">Buscar puesto</a>
+                </li>
+                <li class="nav-item ms-auto d-flex align-items-center me-2">
+                    <span class="text-white me-3" style="font-size:0.9rem;"
+                          th:text="${#authentication.name}">usuario@correo.com</span>
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Salir</button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -34,26 +42,64 @@
 </nav>
 
 <!-- MAIN -->
-<main class="container my-4 flex-grow-1">
+<main class="container my-4 flex-grow-1" style="max-width: 600px;">
 
+    <h3 class="mb-4">Mi CV</h3>
+
+    <!-- Botones principales -->
+    <div class="d-flex gap-2 mb-4">
+
+        <!-- Ver CV: solo aparece si ya tiene uno subido -->
+        <a th:if="${oferente.curriculum != null}"
+           th:href="@{'/uploads/curriculos/' + ${oferente.identificacion} + '.pdf'}"
+           target="_blank"
+           class="btn btn-dark">Ver CV</a>
+
+        <span th:if="${oferente.curriculum == null}"
+              class="btn btn-dark disabled">Ver CV</span>
+
+        <!-- Subir CV: recarga la página con ?subir=true -->
+        <a th:href="@{/oferente/cv(subir=true)}" class="btn btn-dark">Subir CV</a>
+    </div>
+
+    <!-- Mensaje si no tiene CV -->
+    <div th:if="${oferente.curriculum == null and !mostrarSubir}"
+         class="alert alert-warning" style="max-width: 450px;">
+        Aún no tenés un CV subido. Presioná <strong>Subir CV</strong> para agregar uno.
+    </div>
+
+    <!-- Mensaje si ya tiene CV -->
+    <div th:if="${oferente.curriculum != null and !mostrarSubir}"
+         class="alert alert-success" style="max-width: 450px;">
+        Ya tenés un CV subido. Podés verlo o reemplazarlo cuando quieras.
+    </div>
+
+    <!-- Formulario subir CV: se muestra solo si mostrarSubir=true -->
+    <div th:if="${mostrarSubir}" class="border rounded p-4 bg-white" style="max-width: 450px;">
+        <h5 class="mb-3">Subir nuevo CV</h5>
+        <p class="text-muted" style="font-size:0.88rem;">
+            Solo se aceptan archivos <strong>PDF</strong>. Si ya tenés uno subido, será reemplazado.
+        </p>
+        <form th:action="@{/oferente/cv/subir}" method="post" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="archivo" class="form-label fw-semibold">Archivo PDF</label>
+                <input type="file" id="archivo" name="archivo"
+                       class="form-control" accept="application/pdf" required />
+            </div>
+            <div class="d-flex gap-2">
+                <button type="submit" class="btn btn-dark">Subir</button>
+                <a th:href="@{/oferente/cv}" class="btn btn-outline-dark">Cancelar</a>
+            </div>
+        </form>
+    </div>
 
 </main>
 
 <!-- FOOTER -->
 <footer class="bg-dark text-white p-3 mt-auto" style="font-size: 0.9rem;">
     <div class="container d-flex justify-content-between">
-        <div>
-            <b>Bolsa de Empleo</b>
-            <br>
-            Total Soft Inc.
-        </div>
-        <div>
-            <div>
-                Contacto: info@bolsaempleo.local
-                <br>
-                Créditos: Equipo de desarrollo
-            </div>
-        </div>
+        <div><b>Bolsa de Empleo</b><br>Total Soft Inc.</div>
+        <div>Contacto: info@bolsaempleo.local<br>Créditos: Equipo de desarrollo</div>
     </div>
 </footer>
 
