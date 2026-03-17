@@ -8,4 +8,5 @@ import java.util.Optional;
 @Repository
 public interface AdministradorRepository extends CrudRepository<Administrador, String> {
     Optional<Administrador> findByCorreo(String correo);
+    String Hola;
 }
