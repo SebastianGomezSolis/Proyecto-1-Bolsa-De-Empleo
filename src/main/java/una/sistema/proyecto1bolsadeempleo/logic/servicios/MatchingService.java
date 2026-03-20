@@ -107,28 +107,12 @@ public class MatchingService {
 
         for (Oferente oferente : oferentes) {
             List<Habilidad> habilidades = habilidadRepository.findByOferenteIdentificacion(oferente.getIdentificacion());
-
             double similitud = calcularSimilitud(puesto, habilidades);
-
-            int requisitosCumplidos = 0;
-            int totalRequisitos = puesto.getCaracteristicas().size();
-
-            for (PuestoCaracteristica pc : puesto.getCaracteristicas()) {
-                for (Habilidad h : habilidades) {
-                    if (pc.getCaracteristica().getId().equals(h.getCaracteristica().getId())
-                            && h.getNivel() >= pc.getNivelRequerido()) {
-                        requisitosCumplidos++;
-                        break;
-                    }
-                }
-            }
 
             CandidatoResultado resultado = new CandidatoResultado();
             resultado.setOferente(oferente);
             resultado.setSimilitud(similitud);
             resultado.setPorcentaje(similitud * 100.0);
-            resultado.setRequisitosCumplidos(requisitosCumplidos);
-            resultado.setTotalRequisitos(totalRequisitos);
 
             resultados.add(resultado);
         }

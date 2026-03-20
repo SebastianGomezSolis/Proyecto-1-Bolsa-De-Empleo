@@ -32,7 +32,9 @@
                 <!-- Correo del usuario a la derecha -->
                 <li class="nav-item ms-auto d-flex align-items-center me-2">
                     <span class="text-white me-3" style="font-size:0.9rem;" th:text="${empresa.correo}">usuario@correo.com</span>
-                    <a th:href="@{/salir}" class="btn btn-outline-light btn-sm">Salir</a>
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Salir</button>
+                    </form>
                 </li>
             </ul>
         </div>

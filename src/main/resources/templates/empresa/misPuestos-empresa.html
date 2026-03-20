@@ -28,7 +28,9 @@
                 </li>
                 <li class="nav-item ms-auto d-flex align-items-center me-2">
                     <span class="text-white me-3" style="font-size:0.9rem;" th:text="${empresa.correo}">usuario@correo.com</span>
-                    <a th:href="@{/salir}" class="btn btn-outline-light btn-sm">Salir</a>
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-outline-light btn-sm">Salir</button>
+                    </form>
                 </li>
             </ul>
         </div>
@@ -65,7 +67,7 @@
                     <button type="submit" class="btn btn-dark btn-sm"
                             th:disabled="${!puesto.activo}">Desactivar</button>
                 </form>
-                <a th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}"
+                <a th:href="@{/empresa/candidatos/buscar/{id}(id=${puesto.id})}"
                    class="btn btn-dark btn-sm ms-1">Buscar candidatos</a>
             </td>
         </tr>

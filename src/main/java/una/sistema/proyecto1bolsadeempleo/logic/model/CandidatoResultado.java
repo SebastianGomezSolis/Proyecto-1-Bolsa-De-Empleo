@@ -9,8 +9,6 @@ public class CandidatoResultado {
     private Oferente oferente;
     private double similitud;
     private double porcentaje;
-    private int requisitosCumplidos;
-    private int totalRequisitos;
 }
 
 // Esta clase va a guardar el resultado de comparar un oferente contra un puesto...
