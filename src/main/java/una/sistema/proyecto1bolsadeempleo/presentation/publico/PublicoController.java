@@ -213,8 +213,41 @@ public class PublicoController {
     }
 
     // ── LOGIN ─────────────────────────────────────────────────
-    @GetMapping("/login")
+    @GetMapping("/ingresar")
     public String login() {
         return "publico/login";
     }
+
+    @PostMapping("/ingresar")
+    public String login(@RequestParam("correo") String correo,
+                        @RequestParam("clave") String clave,
+                        jakarta.servlet.http.HttpSession session,
+                        Model model) {
+
+        Empresa empresa = empresaService.findByCorreo(correo);
+
+        if (empresa == null) {
+            model.addAttribute("error", "Usuario o contraseña incorrectos");
+            return "publico/login";
+        }
+
+        if (!empresa.getClave().equals(clave)) {
+            model.addAttribute("error", "Usuario o contraseña incorrectos");
+            return "publico/login";
+        }
+
+        if (!empresa.getAutorizado()) {
+            model.addAttribute("error", "La empresa aún no ha sido autorizada");
+            return "publico/login";
+        }
+
+        session.setAttribute("empresa", empresa);
+        return "redirect:/empresa/dashboard";
+    }
+    @GetMapping("/salir")
+    public String salir(jakarta.servlet.http.HttpSession session) {
+        session.removeAttribute("empresa");
+        return "redirect:/ingresar";
+    }
+
 }
