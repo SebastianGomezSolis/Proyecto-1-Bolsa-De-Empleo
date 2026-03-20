@@ -7,7 +7,7 @@ import una.sistema.proyecto1bolsadeempleo.logic.model.Caracteristica;
 
 import java.util.List;
 
-@Service
+@Service("caracteristicaService")
 public class CaracteristicaService {
     @Autowired
     private CaracteristicaRepository caracteristicaRepository;

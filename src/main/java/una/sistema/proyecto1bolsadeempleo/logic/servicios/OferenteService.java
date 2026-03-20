@@ -6,7 +6,7 @@ import una.sistema.proyecto1bolsadeempleo.data.OferenteRepository;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
 import java.util.List;
 
-@Service
+@Service("oferenteService")
 public class OferenteService {
     @Autowired
     private OferenteRepository oferenteRepository;

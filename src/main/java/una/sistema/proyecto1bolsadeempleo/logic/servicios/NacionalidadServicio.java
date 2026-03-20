@@ -29,7 +29,6 @@ public class NacionalidadServicio {
 
             for (Row row : sheet) {
                 if (row.getRowNum() == 0) continue;
-
                 String iso               = formatter.formatCellValue(row.getCell(0));
                 String nombre            = formatter.formatCellValue(row.getCell(2));
                 String iso3              = formatter.formatCellValue(row.getCell(3));

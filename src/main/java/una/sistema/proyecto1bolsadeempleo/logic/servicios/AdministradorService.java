@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import una.sistema.proyecto1bolsadeempleo.data.AdministradorRepository;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Administrador;
 
-@Service
+@Service("administradorService")
 public class AdministradorService {
     @Autowired
     private AdministradorRepository administradorRepository;

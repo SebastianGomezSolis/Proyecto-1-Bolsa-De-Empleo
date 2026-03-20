@@ -6,7 +6,7 @@ import una.sistema.proyecto1bolsadeempleo.data.PuestoCaracteristicaRepository;
 import una.sistema.proyecto1bolsadeempleo.logic.model.PuestoCaracteristica;
 import java.util.List;
 
-@Service
+@Service("puestoCaracteristicaService")
 public class PuestoCaracteristicaService {
     @Autowired
     private PuestoCaracteristicaRepository puestoCaracteristicaRepository;
