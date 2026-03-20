@@ -8,7 +8,7 @@ import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
 import java.time.Instant;
 import java.util.List;
 
-@Service
+@Service("puestoService")
 public class PuestoService {
     @Autowired
     private PuestoRepository puestoRepository;

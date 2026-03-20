@@ -171,8 +171,17 @@ public class PublicoController {
             model.addAttribute("empresa", empresa);
             return "publico/registrar-empresa-publica";
         }
+
+        if (empresa.getClave() == null || empresa.getClave().isBlank()) {
+            model.addAttribute("error", "La clave es obligatoria.");
+            model.addAttribute("empresa", empresa);
+            return "publico/registrar-empresa-publica";
+        }
+
         empresa.setClave(passwordHash.hash(empresa.getClave()));
-        empresaService.registrar(empresa);
+        empresa.setAutorizado(false);
+        empresaService.save(empresa);
+
         model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
         model.addAttribute("empresa", new Empresa());
         return "publico/registrar-empresa-publica";
@@ -231,7 +240,7 @@ public class PublicoController {
             return "publico/login";
         }
 
-        if (!empresa.getClave().equals(clave)) {
+        if (!passwordHash.verify(clave, empresa.getClave())) {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
             return "publico/login";
         }

@@ -6,7 +6,7 @@ import una.sistema.proyecto1bolsadeempleo.data.EmpresaRepository;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Empresa;
 import java.util.List;
 
-@Service
+@Service("empresaService")
 public class EmpresaService {
     @Autowired
     private EmpresaRepository empresaRepository;
