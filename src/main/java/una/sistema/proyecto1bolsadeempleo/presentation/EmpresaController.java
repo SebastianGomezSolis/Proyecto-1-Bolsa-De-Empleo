@@ -11,7 +11,13 @@ import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
 
 @Controller
 @RequestMapping("/empresa")
+<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
 public class EmpresaController {
+========
+public class EmpresaControler {
+    @Autowired
+    private HttpSession session;
+>>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
 
     @Autowired
     private HttpSession session;
@@ -21,7 +27,11 @@ public class EmpresaController {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
+<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
         Empresa empresa = getEmpresaEnSesion();
+========
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
+>>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
 
         if (empresa == null) {
             return "redirect:/ingresar";
@@ -33,7 +43,11 @@ public class EmpresaController {
 
     @GetMapping("/puestos")
     public String misPuestos(Model model) {
+<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
         Empresa empresa = getEmpresaEnSesion();
+========
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
+>>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
 
         if (empresa == null) {
             return "redirect:/ingresar";
@@ -46,7 +60,11 @@ public class EmpresaController {
 
     @GetMapping("/puestos/{id}/candidatos")
     public String verCandidatos(@PathVariable("id") Integer id, Model model) {
+<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
         Empresa empresa = getEmpresaEnSesion();
+========
+        Empresa empresa = (Empresa) session.getAttribute("empresa");
+>>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
 
         if (empresa == null) {
             return "redirect:/ingresar";
