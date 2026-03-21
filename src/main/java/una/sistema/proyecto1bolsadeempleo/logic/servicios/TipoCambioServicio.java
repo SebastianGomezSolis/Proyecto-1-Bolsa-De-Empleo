@@ -12,9 +12,7 @@ public class TipoCambioServicio {
     private static final String API_URL = "https://api.hacienda.go.cr/indicadores/tc/dolar";
 
     public TipoCambio obtenerTipoCambio() {
-
         try {
-
             URL url = new URL(API_URL);
             HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
             conexion.setRequestMethod("GET");
@@ -42,7 +40,6 @@ public class TipoCambioServicio {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

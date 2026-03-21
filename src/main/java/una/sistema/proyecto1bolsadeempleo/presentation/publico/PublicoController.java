@@ -253,10 +253,73 @@ public class PublicoController {
         session.setAttribute("empresa", empresa);
         return "redirect:/empresa/dashboard";
     }
+
     @GetMapping("/salir")
     public String salir(jakarta.servlet.http.HttpSession session) {
         session.removeAttribute("empresa");
         return "redirect:/ingresar";
     }
+
+    /*@PostMapping("/ingresar")
+    public String login(@RequestParam("correo") String correo,
+                        @RequestParam("clave") String clave,
+                        jakarta.servlet.http.HttpSession session,
+                        Model model) {
+
+        Admin admin = adminService.findByCorreo(correo);
+        if (admin != null) {
+            if (!passwordHash.verify(clave, admin.getClave())) {
+                model.addAttribute("error", "Usuario o contraseña incorrectos");
+                return "publico/login";
+            }
+
+            session.setAttribute("usuario", admin);
+            session.setAttribute("rol", "ADMIN");
+            return "redirect:/admin/dashboard";
+        }
+
+        Oferente oferente = oferenteService.findByCorreo(correo);
+        if (oferente != null) {
+            if (!passwordHash.verify(clave, oferente.getClave())) {
+                model.addAttribute("error", "Usuario o contraseña incorrectos");
+                return "publico/login";
+            }
+
+            if (!oferente.getAutorizado()) {
+                model.addAttribute("error", "El oferente aún no ha sido autorizado");
+                return "publico/login";
+            }
+
+            session.setAttribute("usuario", oferente);
+            session.setAttribute("rol", "OFERENTE");
+            return "redirect:/oferente/dashboard";
+        }
+
+        Empresa empresa = empresaService.findByCorreo(correo);
+        if (empresa != null) {
+            if (!passwordHash.verify(clave, empresa.getClave())) {
+                model.addAttribute("error", "Usuario o contraseña incorrectos");
+                return "publico/login";
+            }
+
+            if (!empresa.getAutorizado()) {
+                model.addAttribute("error", "La empresa aún no ha sido autorizada");
+                return "publico/login";
+            }
+
+            session.setAttribute("usuario", empresa);
+            session.setAttribute("rol", "EMPRESA");
+            return "redirect:/empresa/dashboard";
+        }
+
+        model.addAttribute("error", "Usuario o contraseña incorrectos");
+        return "publico/login";
+    }
+
+    @GetMapping("/salir")
+    public String salir(HttpSession session) {
+        session.invalidate();
+        return "redirect:/ingresar";
+    }*/
 
 }
