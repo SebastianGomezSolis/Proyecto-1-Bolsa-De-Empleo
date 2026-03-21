@@ -9,16 +9,12 @@ import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Empresa;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 @Controller
 @RequestMapping("/empresa")
-<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
 public class EmpresaController {
-========
-public class EmpresaControler {
-    @Autowired
-    private HttpSession session;
->>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
-
     @Autowired
     private HttpSession session;
 
@@ -27,11 +23,7 @@ public class EmpresaControler {
 
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
-<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
         Empresa empresa = getEmpresaEnSesion();
-========
-        Empresa empresa = (Empresa) session.getAttribute("empresa");
->>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
 
         if (empresa == null) {
             return "redirect:/ingresar";
@@ -43,11 +35,7 @@ public class EmpresaControler {
 
     @GetMapping("/puestos")
     public String misPuestos(Model model) {
-<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
         Empresa empresa = getEmpresaEnSesion();
-========
-        Empresa empresa = (Empresa) session.getAttribute("empresa");
->>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
 
         if (empresa == null) {
             return "redirect:/ingresar";
@@ -60,11 +48,7 @@ public class EmpresaControler {
 
     @GetMapping("/puestos/{id}/candidatos")
     public String verCandidatos(@PathVariable("id") Integer id, Model model) {
-<<<<<<<< HEAD:src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaController.java
         Empresa empresa = getEmpresaEnSesion();
-========
-        Empresa empresa = (Empresa) session.getAttribute("empresa");
->>>>>>>> 4b69ee2 (Cambios de nombres):src/main/java/una/sistema/proyecto1bolsadeempleo/presentation/EmpresaControler.java
 
         if (empresa == null) {
             return "redirect:/ingresar";
@@ -85,6 +69,51 @@ public class EmpresaControler {
         model.addAttribute("candidatos", gestorDatos.getMatchingService().buscarCandidatosPorPuesto(id));
 
         return "empresa/buscar-candidatos-empresa";
+    }
+
+    @GetMapping("/puestos/publicar")
+    public String publicarPuestoForm(Model model) {
+        Empresa empresa = getEmpresaEnSesion();
+        if (empresa == null) {
+            return "redirect:/ingresar";
+        }
+
+        model.addAttribute("empresa", empresa);
+        model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
+        return "empresa/publicar-puesto-empresa";
+    }
+
+    @PostMapping("/puestos/publicar")
+    public String publicarPuestoGuardar(
+            @RequestParam("descripcion") String descripcion,
+            @RequestParam("salario") double salario,
+            @RequestParam("tipoPublicacion") String tipoPublicacion,
+            @RequestParam(value = "caracteristicaIds", required = false) List<Integer> caracteristicaIds,
+            @RequestParam(value = "nivelRequerido", required = false) List<Integer> nivelRequerido,
+            Model model) {
+
+        Empresa empresa = getEmpresaEnSesion();
+        if (empresa == null) {
+            return "redirect:/ingresar";
+        }
+
+        if (descripcion == null || descripcion.isBlank()) {
+            model.addAttribute("error", "La descripción es obligatoria.");
+            model.addAttribute("empresa", empresa);
+            model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
+            return "empresa/publicar-puesto-empresa";
+        }
+
+        Puesto puesto = new Puesto();
+        puesto.setDescripcion(descripcion);
+        puesto.setSalario(salario);
+        puesto.setTipoPublicacion(tipoPublicacion);
+        puesto.setActivo(true);
+        puesto.setEmpresa(empresa);
+
+        gestorDatos.getPuestoService().crear(puesto);
+
+        return "redirect:/empresa/puestos";
     }
 
     private Empresa getEmpresaEnSesion() {

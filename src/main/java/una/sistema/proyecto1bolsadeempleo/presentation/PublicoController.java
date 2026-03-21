@@ -105,6 +105,7 @@ public class PublicoController {
 
 package una.sistema.proyecto1bolsadeempleo.presentation;
 
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -113,6 +114,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
+import una.sistema.proyecto1bolsadeempleo.logic.model.Administrador;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Empresa;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
 import una.sistema.proyecto1bolsadeempleo.logic.servicios.*;
@@ -121,9 +123,8 @@ import java.util.List;
 
 @Controller
 public class PublicoController {
-
     @Autowired
-    private jakarta.servlet.http.HttpSession session;
+    private HttpSession session;
 
     @Autowired
     private ModeloDatos gestorDatos;
@@ -203,14 +204,31 @@ public class PublicoController {
             model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
             return "publico/registrar-oferente-publica";
         }
+
         if (gestorDatos.getOferenteService().findByCorreo(oferente.getCorreo()) != null) {
             model.addAttribute("error", "El correo ya está registrado.");
             model.addAttribute("oferente", oferente);
             model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
             return "publico/registrar-oferente-publica";
         }
+
+        if (oferente.getClave() == null || oferente.getClave().isBlank()) {
+            model.addAttribute("error", "La clave es obligatoria.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+            return "publico/registrar-oferente-publica";
+        }
+
+        if (oferente.getNacionalidad() == null || oferente.getNacionalidad().isBlank()) {
+            model.addAttribute("error", "Debe seleccionar una nacionalidad.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+            return "publico/registrar-oferente-publica";
+        }
+
         oferente.setClave(passwordHash.hash(oferente.getClave()));
         gestorDatos.getOferenteService().registrar(oferente);
+
         model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
         model.addAttribute("oferente", new Oferente());
         model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
@@ -226,55 +244,20 @@ public class PublicoController {
     @PostMapping("/ingresar")
     public String login(@RequestParam("correo") String correo,
                         @RequestParam("clave") String clave,
-
                         Model model) {
 
-        Empresa empresa = gestorDatos.getEmpresaService().findByCorreo(correo);
-
-        if (empresa == null) {
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
-            return "publico/login";
-        }
-
-        if (!passwordHash.verify(clave, empresa.getClave())) {
-            model.addAttribute("error", "Usuario o contraseña incorrectos");
-            return "publico/login";
-        }
-
-        if (!empresa.getAutorizado()) {
-            model.addAttribute("error", "La empresa aún no ha sido autorizada");
-            return "publico/login";
-        }
-
-        session.setAttribute("empresa", empresa);
-        return "redirect:/empresa/dashboard";
-    }
-
-    @GetMapping("/salir")
-    public String salir() {
-        session.removeAttribute("empresa");
-        return "redirect:/ingresar";
-    }
-
-    /*@PostMapping("/ingresar")
-    public String login(@RequestParam("correo") String correo,
-                        @RequestParam("clave") String clave,
-                        jakarta.servlet.http.HttpSession session,
-                        Model model) {
-
-        Admin admin = adminService.findByCorreo(correo);
+        Administrador admin = gestorDatos.getAdministradorService().findByCorreo(correo);
         if (admin != null) {
-            if (!passwordHash.verify(clave, admin.getClave())) {
-                model.addAttribute("error", "Usuario o contraseña incorrectos");
-                return "publico/login";
+            if (admin.getClave().equals(clave)) {
+                session.setAttribute("administrador", admin);
+                return "redirect:/admin/dashboard";
             }
 
-            session.setAttribute("usuario", admin);
-            session.setAttribute("rol", "ADMIN");
-            return "redirect:/admin/dashboard";
+            model.addAttribute("error", "Usuario o contraseña incorrectos");
+            return "publico/login";
         }
 
-        Oferente oferente = oferenteService.findByCorreo(correo);
+        Oferente oferente = gestorDatos.getOferenteService().findByCorreo(correo);
         if (oferente != null) {
             if (!passwordHash.verify(clave, oferente.getClave())) {
                 model.addAttribute("error", "Usuario o contraseña incorrectos");
@@ -286,12 +269,11 @@ public class PublicoController {
                 return "publico/login";
             }
 
-            session.setAttribute("usuario", oferente);
-            session.setAttribute("rol", "OFERENTE");
+            session.setAttribute("oferente", oferente);
             return "redirect:/oferente/dashboard";
         }
 
-        Empresa empresa = empresaService.findByCorreo(correo);
+        Empresa empresa = gestorDatos.getEmpresaService().findByCorreo(correo);
         if (empresa != null) {
             if (!passwordHash.verify(clave, empresa.getClave())) {
                 model.addAttribute("error", "Usuario o contraseña incorrectos");
@@ -303,8 +285,7 @@ public class PublicoController {
                 return "publico/login";
             }
 
-            session.setAttribute("usuario", empresa);
-            session.setAttribute("rol", "EMPRESA");
+            session.setAttribute("empresa", empresa);
             return "redirect:/empresa/dashboard";
         }
 
@@ -316,6 +297,6 @@ public class PublicoController {
     public String salir(HttpSession session) {
         session.invalidate();
         return "redirect:/ingresar";
-    }*/
+    }
 
 }

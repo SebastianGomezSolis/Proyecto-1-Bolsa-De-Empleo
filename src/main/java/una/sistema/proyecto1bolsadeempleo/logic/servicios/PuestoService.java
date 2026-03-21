@@ -47,6 +47,10 @@ public class PuestoService {
         return puestoRepository.findPublicosPorCaracteristicas(ids);
     }
 
+    public List<Puesto> findPorFechaRegistroEntre(Instant inicio, Instant fin) {
+        return puestoRepository.findByFechaRegistroBetween(inicio, fin);
+    }
+
     @Transactional
     public Puesto desactivar(Integer id) {
         Puesto puesto = findById(id);

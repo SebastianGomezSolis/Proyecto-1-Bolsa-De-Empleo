@@ -11,7 +11,6 @@ import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
 @Controller
 @RequestMapping("/oferente")
 public class OferenteController {
-
     @Autowired
     private HttpSession session;
 
