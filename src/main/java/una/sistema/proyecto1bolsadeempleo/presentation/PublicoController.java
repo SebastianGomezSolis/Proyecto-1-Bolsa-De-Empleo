@@ -103,7 +103,7 @@ public class PublicoController {
     }
 }*/
 
-package una.sistema.proyecto1bolsadeempleo.presentation.publico;
+package una.sistema.proyecto1bolsadeempleo.presentation;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -112,6 +112,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Empresa;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
 import una.sistema.proyecto1bolsadeempleo.logic.servicios.*;
@@ -120,17 +121,12 @@ import java.util.List;
 
 @Controller
 public class PublicoController {
-    @Autowired
-    private PuestoService puestoService;
 
     @Autowired
-    private CaracteristicaService caracteristicaService;
+    private jakarta.servlet.http.HttpSession session;
 
     @Autowired
-    private EmpresaService empresaService;
-
-    @Autowired
-    private OferenteService oferenteService;
+    private ModeloDatos gestorDatos;
 
     @Autowired
     private PasswordHash passwordHash;
@@ -138,7 +134,7 @@ public class PublicoController {
     // ── PÁGINA PRINCIPAL ──────────────────────────────────────
     @GetMapping("/")
     public String paginaPrincipal(Model model) {
-        model.addAttribute("puestos", puestoService.findUltimos5Publicos());
+        model.addAttribute("puestos", gestorDatos.getPuestoService().findUltimos5Publicos());
         return "publico/pagina-principal";
     }
 
@@ -147,12 +143,12 @@ public class PublicoController {
     public String buscarPuestos(
             @RequestParam(required = false) List<Integer> caracteristicaIds,
             Model model) {
-        model.addAttribute("caracteristicas", caracteristicaService.findRaices());
+        model.addAttribute("caracteristicas", gestorDatos.getCaracteristicaService().findRaices());
         if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
             model.addAttribute("puestos", List.of());
         } else {
             model.addAttribute("puestos",
-                    puestoService.findPorCaracteristicas(caracteristicaIds));
+                    gestorDatos.getPuestoService().findPorCaracteristicas(caracteristicaIds));
         }
         return "publico/buscar-puesto-publica";
     }
@@ -166,7 +162,7 @@ public class PublicoController {
 
     @PostMapping("/registro/empresa")
     public String registroEmpresaGuardar(@ModelAttribute Empresa empresa, Model model) {
-        if (empresaService.findByCorreo(empresa.getCorreo()) != null) {
+        if (gestorDatos.getEmpresaService().findByCorreo(empresa.getCorreo()) != null) {
             model.addAttribute("error", "El correo ya está registrado.");
             model.addAttribute("empresa", empresa);
             return "publico/registrar-empresa-publica";
@@ -180,7 +176,7 @@ public class PublicoController {
 
         empresa.setClave(passwordHash.hash(empresa.getClave()));
         empresa.setAutorizado(false);
-        empresaService.save(empresa);
+        gestorDatos.getEmpresaService().save(empresa);
 
         model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
         model.addAttribute("empresa", new Empresa());
@@ -201,20 +197,20 @@ public class PublicoController {
     public String registroOferenteGuardar(@ModelAttribute Oferente oferente, Model model) {
         NacionalidadServicio nacionalidadServicio = new NacionalidadServicio();
 
-        if (oferenteService.findById(oferente.getIdentificacion()) != null) {
+        if (gestorDatos.getOferenteService().findById(oferente.getIdentificacion()) != null) {
             model.addAttribute("error", "La identificación ya está registrada.");
             model.addAttribute("oferente", oferente);
             model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
             return "publico/registrar-oferente-publica";
         }
-        if (oferenteService.findByCorreo(oferente.getCorreo()) != null) {
+        if (gestorDatos.getOferenteService().findByCorreo(oferente.getCorreo()) != null) {
             model.addAttribute("error", "El correo ya está registrado.");
             model.addAttribute("oferente", oferente);
             model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
             return "publico/registrar-oferente-publica";
         }
         oferente.setClave(passwordHash.hash(oferente.getClave()));
-        oferenteService.registrar(oferente);
+        gestorDatos.getOferenteService().registrar(oferente);
         model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
         model.addAttribute("oferente", new Oferente());
         model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
@@ -230,10 +226,10 @@ public class PublicoController {
     @PostMapping("/ingresar")
     public String login(@RequestParam("correo") String correo,
                         @RequestParam("clave") String clave,
-                        jakarta.servlet.http.HttpSession session,
+
                         Model model) {
 
-        Empresa empresa = empresaService.findByCorreo(correo);
+        Empresa empresa = gestorDatos.getEmpresaService().findByCorreo(correo);
 
         if (empresa == null) {
             model.addAttribute("error", "Usuario o contraseña incorrectos");
@@ -255,7 +251,7 @@ public class PublicoController {
     }
 
     @GetMapping("/salir")
-    public String salir(jakarta.servlet.http.HttpSession session) {
+    public String salir() {
         session.removeAttribute("empresa");
         return "redirect:/ingresar";
     }

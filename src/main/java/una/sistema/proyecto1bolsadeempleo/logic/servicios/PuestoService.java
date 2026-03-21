@@ -5,11 +5,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import una.sistema.proyecto1bolsadeempleo.data.PuestoRepository;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
+
 import java.time.Instant;
 import java.util.List;
 
-@Service("puestoService")
+@Service
 public class PuestoService {
+
     @Autowired
     private PuestoRepository puestoRepository;
 
@@ -21,7 +23,7 @@ public class PuestoService {
         return puestoRepository.findByEmpresaId(empresaId);
     }
 
-    public Puesto save(Puesto puesto) {
+    public Puesto crear(Puesto puesto) {
         puesto.setActivo(true);
         puesto.setFechaRegistro(Instant.now());
         return puestoRepository.save(puesto);
@@ -29,9 +31,11 @@ public class PuestoService {
 
     @Transactional
     public List<Puesto> findUltimos5Publicos() {
-        List<Puesto> puestos = puestoRepository
-                .findTop5ByTipoPublicacionAndActivoOrderByFechaRegistroDesc("publico", true);
+        List<Puesto> puestos =
+                puestoRepository.findTop5ByTipoPublicacionAndActivoOrderByFechaRegistroDesc("publico", true);
+
         puestos.forEach(p -> p.getCaracteristicas().size());
+
         return puestos;
     }
 
@@ -43,12 +47,15 @@ public class PuestoService {
         return puestoRepository.findPublicosPorCaracteristicas(ids);
     }
 
+    @Transactional
     public Puesto desactivar(Integer id) {
         Puesto puesto = findById(id);
+
         if (puesto != null) {
             puesto.setActivo(false);
             puestoRepository.save(puesto);
         }
+
         return puesto;
     }
 }
