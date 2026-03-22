@@ -42,6 +42,9 @@
 
     <h3 class="mb-4">Características</h3>
 
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+    <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+
     <div class="row g-4">
 
         <!-- Columna izquierda: navegador jerárquico -->

@@ -76,7 +76,12 @@ public class PuestoService {
     }
 
     @Transactional
-    public Puesto crearConCaracteristicas(String descripcion, Double salario, String tipoPublicacion, Empresa empresa, List<Integer> caracteristicaIds, Map<String, String> parametrosFormulario) {
+    public Puesto crearConCaracteristicas(String descripcion, Double salario,
+                                          String tipoPublicacion,
+                                          Empresa empresa,
+                                          List<Integer> caracteristicaIds,
+                                          Map<String, String> parametrosFormulario) {
+
         // Validación de seguridad: una empresa autenticada es obligatoria
         if (empresa == null) {
             throw new IllegalArgumentException("La empresa autenticada es obligatoria.");
