@@ -111,7 +111,9 @@ public class EmpresaController {
 
             // Si salió bien, se redirige al listado de puestos de la empresa
             return "redirect:/empresa/puestos";
+
         } catch (IllegalArgumentException e){
+
             // Si hubo una validación de negocio, se regresa al formulario con el error
             model.addAttribute("error", e.getMessage());
             model.addAttribute("empresa", empresa);
@@ -123,5 +125,34 @@ public class EmpresaController {
 
     private Empresa getEmpresaEnSesion() {
         return (Empresa) session.getAttribute("empresa");
+    }
+
+    @PostMapping("/puestos/desactivar/{id}")
+    public String desactivarPuesto(@PathVariable("id") Integer id) {
+
+        // Se obtiene la empresa autenticada desde sesión
+        Empresa empresa = getEmpresaEnSesion();
+        if (empresa == null) {
+            return "redirect:/ingresar";
+        }
+
+        // Se busca el puesto por id
+        Puesto puesto = gestorDatos.getPuestoService().findById(id);
+
+        // Si el puesto no existe, se regresa al listado
+        if (puesto == null) {
+            return "redirect:/empresa/puestos";
+        }
+
+        // Validación de que solo la empresa dueña del puesto pueda eliminarlo
+        if (puesto.getEmpresa() == null || !puesto.getEmpresa().getId().equals(empresa.getId())) {
+            return "redirect:/empresa/puestos";
+        }
+
+        // Se delega al servicio la desactivación lógica del puesto
+        gestorDatos.getPuestoService().desactivar(id);
+
+        // Se vuelve al listado de puestos de la empresa
+        return "redirect:/empresa/puestos";
     }
 }
