@@ -51,7 +51,7 @@
             Seleccione el mes y el año para descargar el reporte en PDF con todos los puestos publicados en ese período.
         </p>
 
-        <form th:action="@{/admin/reportes/pdf}" method="get">
+        <form th:action="@{/admin/reportes/pdf}" method="get" target="_blank">
             <div class="row g-3 mb-3">
 
                 <!-- Mes -->
@@ -84,7 +84,7 @@
             </div>
 
             <button type="submit" class="btn btn-dark">
-                Descargar PDF
+                Ver PDF
             </button>
         </form>
     </div>

@@ -101,7 +101,7 @@ public class AdministradorController {
 
         response.setContentType("application/pdf");
         response.setHeader("Content-Disposition",
-                "attachment; filename=reporte_puestos_" + mes + "_" + anio + ".pdf");
+                "inline; filename=reporte_puestos_" + mes + "_" + anio + ".pdf");
         response.getOutputStream().write(pdf);
         response.getOutputStream().flush();
     }
