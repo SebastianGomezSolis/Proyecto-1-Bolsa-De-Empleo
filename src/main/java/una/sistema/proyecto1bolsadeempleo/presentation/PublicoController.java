@@ -117,6 +117,7 @@ import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Administrador;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Empresa;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
+import una.sistema.proyecto1bolsadeempleo.logic.model.TipoCambio;
 import una.sistema.proyecto1bolsadeempleo.logic.servicios.*;
 
 import java.util.List;
@@ -136,6 +137,9 @@ public class PublicoController {
     @GetMapping("/")
     public String paginaPrincipal(Model model) {
         model.addAttribute("puestos", gestorDatos.getPuestoService().findUltimos5Publicos());
+        TipoCambioServicio tcServicio = new TipoCambioServicio();
+        TipoCambio tipoCambio = tcServicio.obtenerTipoCambio();
+        model.addAttribute("tipoCambio", tipoCambio);
         return "publico/pagina-principal";
     }
 
@@ -151,6 +155,9 @@ public class PublicoController {
             model.addAttribute("puestos",
                     gestorDatos.getPuestoService().findPorCaracteristicas(caracteristicaIds));
         }
+        TipoCambioServicio tcServicio = new TipoCambioServicio();
+        TipoCambio tipoCambio = tcServicio.obtenerTipoCambio();
+        model.addAttribute("tipoCambio", tipoCambio);
         return "publico/buscar-puesto-publica";
     }
 

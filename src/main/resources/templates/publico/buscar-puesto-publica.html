@@ -84,9 +84,8 @@
             </div>
 
             <!-- Botones -->
-            <a class="btn btn-primary" th:href="@{/puestos/buscar}">Buscar</a>
+            <button type="submit" class="btn btn-primary">Buscar</button>
             <a class="btn btn-secondary ms-2" th:href="@{/puestos/buscar}">Limpiar</a>
-
         </form>
     </div>
 
@@ -99,7 +98,9 @@
                     <h6 class="fw-bold" th:text="${puesto.empresa.nombre}">Empresa</h6>
                     <p class="mb-1" th:text="${puesto.descripcion}">Descripción</p>
                     <p class="fw-bold mb-0">
-                        Salario: <span th:text="${puesto.salario}">0</span>
+                        $<span th:text="${#numbers.formatDecimal(puesto.salario, 1, 2)}"></span>
+                        /
+                        ₡<span th:text="${tipoCambio != null ? #numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 0) : 'No disponible'}"></span>
                     </p>
                 </div>
             </div>

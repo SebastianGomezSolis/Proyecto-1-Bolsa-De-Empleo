@@ -23,24 +23,22 @@ public class TipoCambioServicio {
 
             StringBuilder respuesta = new StringBuilder();
             String linea;
-
             while ((linea = reader.readLine()) != null) {
                 respuesta.append(linea);
             }
-
             reader.close();
 
             JSONObject json = new JSONObject(respuesta.toString());
 
-            double compra = json.getDouble("compra");
-            double venta = json.getDouble("venta");
+            // La API devuelve objetos anidados: {"fecha":"...","valor":463.24}
+            double compra = json.getJSONObject("compra").getDouble("valor");
+            double venta  = json.getJSONObject("venta").getDouble("valor");
 
             return new TipoCambio(compra, venta, "USD");
 
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-        return null;
     }
-
 }

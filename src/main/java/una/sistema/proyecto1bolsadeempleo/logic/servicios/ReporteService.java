@@ -86,7 +86,7 @@ public class ReporteService {
                     y = drawSectionTitle(content, margin, y, bold, "Puesto " + contador);
 
                     y = drawField(content, margin, y, regular, "Descripción", safe(puesto.getDescripcion()));
-                    y = drawField(content, margin, y, regular, "Salario", "₡" + safe(String.valueOf(puesto.getSalario())));
+                    y = drawField(content, margin, y, regular, "Salario", "$" + safe(String.valueOf(puesto.getSalario())));
                     y = drawField(content, margin, y, regular, "Tipo de publicación", safe(puesto.getTipoPublicacion()));
                     y = drawField(content, margin, y, regular, "Estado", Boolean.TRUE.equals(puesto.getActivo()) ? "Activo" : "Inactivo");
 
