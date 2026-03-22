@@ -36,6 +36,9 @@
 
     <h3 class="mb-4">Publicar puesto</h3>
 
+    <!-- Mensaje de error en vista -->
+    <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
+
     <form th:action="@{/empresa/puestos/publicar}" method="post">
 
         <!-- Descripción -->
@@ -47,7 +50,7 @@
 
         <!-- Salario -->
         <div class="mb-3">
-            <label for="salario" class="form-label fw-semibold">Salario (₡)</label>
+            <label for="salario" class="form-label fw-semibold">Salario ($)</label>
             <input type="number" id="salario" name="salario" class="form-control"
                    placeholder="Ej: 850000" min="0" step="1000" required />
         </div>
@@ -81,28 +84,31 @@
             </p>
 
             <div th:each="raiz : ${raices}" class="mb-3">
-                <!-- Raíz como acordeón -->
                 <div class="border rounded">
                     <div class="bg-secondary bg-opacity-10 px-3 py-2 fw-semibold"
-                         style="font-size:0.95rem;" th:text="${raiz.nombre}"></div>
+                         style="font-size:0.95rem;"
+                         th:text="${raiz.nombre}"></div>
 
                     <div class="px-3 py-2">
-                        <!-- Hijos de primer nivel -->
                         <div th:each="hijo : ${raiz.hijos}" class="mb-2">
 
-                            <!-- Si el hijo es hoja, se selecciona directamente -->
+                            <!-- Si el hijo es hoja -->
                             <div th:if="${hijo.isHoja()}" class="d-flex align-items-center gap-3">
-                                <input class="form-check-input" type="checkbox"
+                                <input class="form-check-input"
+                                       type="checkbox"
+                                       name="caracteristicaIds"
                                        th:id="'car_' + ${hijo.id}"
-                                       th:name="'caracteristicaIds'"
                                        th:value="${hijo.id}" />
+
                                 <label class="form-check-label flex-grow-1"
                                        th:for="'car_' + ${hijo.id}"
                                        th:text="${hijo.nombre}"></label>
+
                                 <div class="d-flex align-items-center gap-1">
-                                    <label class="text-muted" style="font-size:0.8rem;">Nivel:</label>
-                                    <select th:name="'nivelRequerido'" class="form-select form-select-sm"
-                                            style="width:70px;">
+                                    <label class="text-muted mb-0" style="font-size:0.8rem;">Nivel:</label>
+                                    <select class="form-select form-select-sm"
+                                            style="width:70px;"
+                                            th:name="'nivel_' + ${hijo.id}">
                                         <option value="1">1</option>
                                         <option value="2">2</option>
                                         <option value="3">3</option>
@@ -112,23 +118,30 @@
                                 </div>
                             </div>
 
-                            <!-- Si el hijo tiene sus propios hijos -->
+                            <!-- Si el hijo tiene subcategorías -->
                             <div th:unless="${hijo.isHoja()}">
                                 <div class="fw-semibold text-secondary mb-1"
-                                     style="font-size:0.88rem;" th:text="${hijo.nombre}"></div>
+                                     style="font-size:0.88rem;"
+                                     th:text="${hijo.nombre}"></div>
+
                                 <div th:each="nieto : ${hijo.hijos}"
                                      class="d-flex align-items-center gap-3 ms-3 mb-1">
-                                    <input class="form-check-input" type="checkbox"
+
+                                    <input class="form-check-input"
+                                           type="checkbox"
+                                           name="caracteristicaIds"
                                            th:id="'car_' + ${nieto.id}"
-                                           th:name="'caracteristicaIds'"
                                            th:value="${nieto.id}" />
+
                                     <label class="form-check-label flex-grow-1"
                                            th:for="'car_' + ${nieto.id}"
                                            th:text="${nieto.nombre}"></label>
+
                                     <div class="d-flex align-items-center gap-1">
-                                        <label class="text-muted" style="font-size:0.8rem;">Nivel:</label>
-                                        <select th:name="'nivelRequerido'" class="form-select form-select-sm"
-                                                style="width:70px;">
+                                        <label class="text-muted mb-0" style="font-size:0.8rem;">Nivel:</label>
+                                        <select class="form-select form-select-sm"
+                                                style="width:70px;"
+                                                th:name="'nivel_' + ${nieto.id}">
                                             <option value="1">1</option>
                                             <option value="2">2</option>
                                             <option value="3">3</option>

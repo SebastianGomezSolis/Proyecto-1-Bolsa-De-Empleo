@@ -11,6 +11,7 @@ import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/empresa")
@@ -86,10 +87,10 @@ public class EmpresaController {
     @PostMapping("/puestos/publicar")
     public String publicarPuestoGuardar(
             @RequestParam("descripcion") String descripcion,
-            @RequestParam("salario") double salario,
+            @RequestParam("salario") Double salario,
             @RequestParam("tipoPublicacion") String tipoPublicacion,
             @RequestParam(value = "caracteristicaIds", required = false) List<Integer> caracteristicaIds,
-            @RequestParam(value = "nivelRequerido", required = false) List<Integer> nivelRequerido,
+            @RequestParam Map<String, String> parametrosFormulario,
             Model model) {
 
         Empresa empresa = getEmpresaEnSesion();
@@ -97,23 +98,27 @@ public class EmpresaController {
             return "redirect:/ingresar";
         }
 
-        if (descripcion == null || descripcion.isBlank()) {
-            model.addAttribute("error", "La descripción es obligatoria.");
+        try {
+            // El controlador delega la lógica completa de creación al servicio
+            gestorDatos.getPuestoService().crearConCaracteristicas(
+                    descripcion,
+                    salario,
+                    tipoPublicacion,
+                    empresa,
+                    caracteristicaIds,
+                    parametrosFormulario
+            );
+
+            // Si salió bien, se redirige al listado de puestos de la empresa
+            return "redirect:/empresa/puestos";
+        } catch (IllegalArgumentException e){
+            // Si hubo una validación de negocio, se regresa al formulario con el error
+            model.addAttribute("error", e.getMessage());
             model.addAttribute("empresa", empresa);
             model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
             return "empresa/publicar-puesto-empresa";
         }
 
-        Puesto puesto = new Puesto();
-        puesto.setDescripcion(descripcion);
-        puesto.setSalario(salario);
-        puesto.setTipoPublicacion(tipoPublicacion);
-        puesto.setActivo(true);
-        puesto.setEmpresa(empresa);
-
-        gestorDatos.getPuestoService().crear(puesto);
-
-        return "redirect:/empresa/puestos";
     }
 
     private Empresa getEmpresaEnSesion() {
