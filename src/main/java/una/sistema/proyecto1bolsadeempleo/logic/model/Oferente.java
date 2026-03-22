@@ -24,7 +24,7 @@ public class Oferente {
 
     @Size(max = 100)
     @NotNull
-    @Column(name = "primerApellido", nullable = false, length = 100)
+    @Column(name = "primer_apellido", nullable = false, length = 100)
     private String primerApellido;
 
     @Size(max = 50)
@@ -42,7 +42,7 @@ public class Oferente {
     private String correo;
 
     @Size(max = 150)
-    @Column(name = "lugarResidencia", length = 150)
+    @Column(name = "lugar_residencia", length = 150)
     private String lugarResidencia;
 
     @Size(max = 255)

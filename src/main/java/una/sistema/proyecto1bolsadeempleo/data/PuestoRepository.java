@@ -6,6 +6,8 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
 
+import java.time.Instant;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -19,4 +21,6 @@ public interface PuestoRepository extends CrudRepository<Puesto, Integer> {
     // PuestoRepository.java
     @Query("SELECT DISTINCT p FROM Puesto p " + "JOIN p.caracteristicas pc " + "WHERE p.tipoPublicacion = 'publico' " + "AND p.activo = true " + "AND pc.caracteristica.id IN :ids")
     List<Puesto> findPublicosPorCaracteristicas(@Param("ids") List<Integer> ids);
+    // Reporte por rango de fechas
+    List<Puesto> findByFechaRegistroBetween(Instant inicio, Instant fin);
 }

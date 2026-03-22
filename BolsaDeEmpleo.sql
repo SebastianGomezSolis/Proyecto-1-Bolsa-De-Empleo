@@ -34,11 +34,11 @@ CREATE TABLE Empresa (
 CREATE TABLE oferente (
                           identificacion VARCHAR(20) NOT NULL,
                           nombre VARCHAR(100) NOT NULL,
-                          primerApellido VARCHAR(100) NOT NULL,
+                          primer_apellido VARCHAR(100) NOT NULL,
                           nacionalidad VARCHAR(50),
                           telefono VARCHAR(20),
                           correo VARCHAR(100) NOT NULL,
-                          lugarResidencia VARCHAR(150),
+                          lugar_residencia VARCHAR(150),
                           clave VARCHAR(255) NOT NULL,
                           autorizado BOOLEAN NOT NULL DEFAULT FALSE,
                           curriculum VARCHAR(255),
