@@ -129,7 +129,6 @@ public class EmpresaController {
 
     @PostMapping("/puestos/desactivar/{id}")
     public String desactivarPuesto(@PathVariable("id") Integer id) {
-
         // Se obtiene la empresa autenticada desde sesión
         Empresa empresa = getEmpresaEnSesion();
         if (empresa == null) {

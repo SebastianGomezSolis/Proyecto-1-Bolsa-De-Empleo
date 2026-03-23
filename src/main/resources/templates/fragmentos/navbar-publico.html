@@ -1,10 +1,24 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-
-</body>
-</html>
+<nav th:fragment="nav" class="navbar navbar-dark bg-dark">
+    <div class="container-fluid p-0">
+        <div class="d-flex align-items-center w-100">
+            <a class="navbar-brand mb-0 h1 px-2 d-flex align-items-center" th:href="@{/}" style="font-size:1.1rem;">
+                <img th:src="@{/images/bolsaEmpleo.png}" alt="Logo" style="height:28px; width:auto; margin-right:8px;" />
+                <span>Bolsa de Empleo</span>
+            </a>
+            <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/puestos/buscar}" style="font-size:0.9rem;">Buscar puestos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/registro/empresa}" style="font-size:0.9rem;">Registro Empresa</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/registro/oferente}" style="font-size:0.9rem;">Registro Oferente</a>
+                </li>
+                <li class="nav-item ms-auto me-3">
+                    <a class="nav-link" th:href="@{/ingresar}" style="font-size:0.9rem;">Login</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>

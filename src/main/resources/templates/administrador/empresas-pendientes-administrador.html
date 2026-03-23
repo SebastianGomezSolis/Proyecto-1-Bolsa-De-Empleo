@@ -5,37 +5,7 @@
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <!-- NAV -->
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid p-0">
-        <div class="d-flex align-items-center w-100">
-            <a class="navbar-brand mb-0 h1 px-2 d-flex align-items-center" th:href="@{/admin/empresas/pendientes}" style="font-size:1.1rem;">
-                <img th:src="@{/images/bolsaEmpleo.png}" alt="Logo" style="height:28px; width:auto; margin-right:8px;" />
-                <span>BolsaEmpleo</span>
-            </a>
-            <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/dashboard}" style="font-size:0.9rem;">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/admin/empresas/pendientes}" style="font-size:0.9rem;">Empresas pendientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/oferentes/pendientes}" style="font-size:0.9rem;">Oferentes pendientes</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/caracteristicas}" style="font-size:0.9rem;">Características</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/reportes}" style="font-size:0.9rem;">Reportes</a>
-                </li>
-                <li class="nav-item ms-auto d-flex align-items-center me-2">
-                    <span class="text-white me-3" style="font-size:0.9rem;" th:text="${admin.correo}">usuario@correo.com</span>
-                    <a th:href="@{/salir}" class="btn btn-outline-light btn-sm">Salir</a>
-                </li>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:replace="fragmentos/navbar-administrador :: nav"></div>
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">

@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Caracteristica;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Habilidad;
@@ -81,7 +82,8 @@ public class OferenteController {
     @PostMapping("/habilidades/agregar")
     public String agregarHabilidad(
             @RequestParam("caracteristicaId") Integer caracteristicaId,
-            @RequestParam("nivel") Integer nivel) {
+            @RequestParam("nivel") Integer nivel,
+            RedirectAttributes redirectAttributes) {
 
         Oferente oferente = getOferenteEnSesion();
 
@@ -108,6 +110,8 @@ public class OferenteController {
         for (Habilidad h : habilidades) {
             if (h.getCaracteristica() != null &&
                     h.getCaracteristica().getId().equals(caracteristicaId)) {
+                redirectAttributes.addFlashAttribute("error",
+                        "La habilidad \"" + caracteristica.getNombre() + "\" ya está registrada.");
                 return "redirect:/oferente/habilidades";
             }
         }
@@ -218,8 +222,31 @@ public class OferenteController {
             return "oferente/cv-oferente";
         }
     }
-    private Oferente getOferenteEnSesion() {
-        return (Oferente) session.getAttribute("oferente");
+
+    @GetMapping("/buscar")
+    public String buscarPuestos(
+            @RequestParam(required = false) List<Integer> caracteristicaIds,
+            Model model) {
+
+        Oferente oferente = getOferenteEnSesion();
+        if (oferente == null) {
+            return "redirect:/ingresar";
+        }
+
+        model.addAttribute("oferente", oferente);
+        model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
+
+        if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
+            model.addAttribute("puestos", null);
+        } else {
+            // El oferente ve públicos Y privados
+            List<una.sistema.proyecto1bolsadeempleo.logic.model.Puesto> todos =
+                    gestorDatos.getPuestoService().findPorCaracteristicas(caracteristicaIds);
+            model.addAttribute("puestos", todos);
+            model.addAttribute("caracteristicaIds", caracteristicaIds);
+        }
+
+        return "oferente/buscar-puesto";
     }
 
     private List<Caracteristica> construirRuta(Caracteristica actual) {
@@ -231,5 +258,9 @@ public class OferenteController {
         }
 
         return ruta;
+    }
+
+    private Oferente getOferenteEnSesion() {
+        return (Oferente) session.getAttribute("oferente");
     }
 }

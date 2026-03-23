@@ -5,35 +5,7 @@
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <!-- NAV -->
-<nav class="navbar navbar-dark bg-dark">
-    <div class="container-fluid p-0">
-        <div class="d-flex align-items-center w-100">
-            <a class="navbar-brand mb-0 h1 px-2 d-flex align-items-center" th:href="@{/oferente/buscar}" style="font-size:1.1rem;">
-                <img th:src="@{/images/bolsaEmpleo.png}" alt="Logo" style="height:28px; width:auto; margin-right:8px;" />
-                <span>BolsaEmpleo</span>
-            </a>
-            <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/oferente/dashboard}" style="font-size:0.9rem;">Dashboard</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/oferente/habilidades}" style="font-size:0.9rem;">Mis habilidades</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" th:href="@{/oferente/cv}" style="font-size:0.9rem;">Mi CV</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link active" th:href="@{/oferente/buscar}" style="font-size:0.9rem;">Buscar puesto</a>
-                </li>
-                <li class="nav-item ms-auto d-flex align-items-center me-2">
-                    <span class="text-white me-3" style="font-size:0.9rem;" th:text="${oferente.correo}">usuario@correo.com</span>
-                    <a th:href="@{/salir}" class="btn btn-outline-light btn-sm">Salir</a>
-                </li>
-            </ul>
-            </ul>
-        </div>
-    </div>
-</nav>
+<div th:replace="fragmentos/navbar-oferente :: nav"></div>
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
@@ -48,13 +20,18 @@
         <div class="border rounded p-3 bg-white mb-4">
             <h6 class="fw-bold mb-3">Buscar puestos por características</h6>
 
+            <!-- Características en columnas, igual que la pública pero sin checkbox en raíces -->
             <div class="row">
                 <div th:each="raiz : ${raices}" class="col-md-3 mb-3">
+
+                    <!-- Nombre de la raíz (solo label, sin checkbox) -->
                     <div class="fw-semibold text-secondary mb-1"
-                         style="font-size:0.88rem;" th:text="${raiz.nombre}"></div>
+                         style="font-size:0.88rem;"
+                         th:text="${raiz.nombre}"></div>
 
                     <div th:each="hijo : ${raiz.hijos}">
-                        <!-- Hijo hoja -->
+
+                        <!-- Hijo hoja: checkbox directo -->
                         <div th:if="${hijo.isHoja()}" class="form-check ms-1 mb-1">
                             <input class="form-check-input" type="checkbox"
                                    name="caracteristicaIds"
@@ -66,7 +43,8 @@
                                    th:text="${hijo.nombre}"
                                    style="font-size:0.88rem;"></label>
                         </div>
-                        <!-- Hijo con hijos -->
+
+                        <!-- Hijo con hijos: mostrar subcategoría en itálica y sus hojas con checkbox -->
                         <div th:unless="${hijo.isHoja()}">
                             <div class="text-muted ms-1 mb-1"
                                  style="font-size:0.82rem; font-style:italic;"
@@ -83,6 +61,7 @@
                                        style="font-size:0.88rem;"></label>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
