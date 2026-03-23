@@ -14,6 +14,7 @@ public class ModeloDatos {
     @Autowired private CaracteristicaService caracteristicaService;
     @Autowired private HabilidadService habilidadService;
     @Autowired private ReporteService reporteService;
+    @Autowired private NacionalidadService nacionalidadService;
 
     public AdministradorService getAdministradorService() { return administradorService; }
     public EmpresaService getEmpresaService() { return empresaService; }
@@ -23,5 +24,6 @@ public class ModeloDatos {
     public CaracteristicaService getCaracteristicaService() { return caracteristicaService; }
     public HabilidadService getHabilidadService() { return habilidadService; }
     public ReporteService getReporteService() { return reporteService; }
+    public NacionalidadService getNacionalidadService() { return nacionalidadService; }
 
 }

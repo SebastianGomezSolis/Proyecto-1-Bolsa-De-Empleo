@@ -27,9 +27,9 @@ public class Oferente {
     @Column(name = "primer_apellido", nullable = false, length = 100)
     private String primerApellido;
 
-    @Size(max = 50)
+    @Size(max = 5)
     @NotNull
-    @Column(name = "nacionalidad", nullable = false, length = 50)
+    @Column(name = "nacionalidad", nullable = false, length = 5)
     private String nacionalidad;
 
     @Size(max = 20)

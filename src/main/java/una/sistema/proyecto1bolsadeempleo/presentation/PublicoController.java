@@ -194,42 +194,50 @@ public class PublicoController {
     // ── REGISTRO OFERENTE ─────────────────────────────────────
     @GetMapping("/registro/oferente")
     public String registroOferenteForm(Model model) {
-        // Cargar nacionalidades del Excel
-        NacionalidadServicio nacionalidadServicio = new NacionalidadServicio();
+
+        // Se cargan las nacionalidades desde la base de datos
         model.addAttribute("oferente", new Oferente());
-        model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+        model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+
         return "publico/registrar-oferente-publica";
     }
 
     @PostMapping("/registro/oferente")
     public String registroOferenteGuardar(@ModelAttribute Oferente oferente, Model model) {
-        NacionalidadServicio nacionalidadServicio = new NacionalidadServicio();
 
         if (gestorDatos.getOferenteService().findById(oferente.getIdentificacion()) != null) {
             model.addAttribute("error", "La identificación ya está registrada.");
             model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
             return "publico/registrar-oferente-publica";
         }
 
         if (gestorDatos.getOferenteService().findByCorreo(oferente.getCorreo()) != null) {
             model.addAttribute("error", "El correo ya está registrado.");
             model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
             return "publico/registrar-oferente-publica";
         }
 
         if (oferente.getClave() == null || oferente.getClave().isBlank()) {
             model.addAttribute("error", "La clave es obligatoria.");
             model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
             return "publico/registrar-oferente-publica";
         }
 
         if (oferente.getNacionalidad() == null || oferente.getNacionalidad().isBlank()) {
             model.addAttribute("error", "Debe seleccionar una nacionalidad.");
             model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+            return "publico/registrar-oferente-publica";
+        }
+
+        // Se valida que el ISO seleccionado exista realmente en la base
+        if (gestorDatos.getNacionalidadService().findByIso(oferente.getNacionalidad()) == null) {
+            model.addAttribute("error", "La nacionalidad seleccionada no es válida.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
             return "publico/registrar-oferente-publica";
         }
 
@@ -238,7 +246,8 @@ public class PublicoController {
 
         model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
         model.addAttribute("oferente", new Oferente());
-        model.addAttribute("nacionalidades", nacionalidadServicio.obtenerNacionalidades());
+        model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+
         return "publico/registrar-oferente-publica";
     }
 

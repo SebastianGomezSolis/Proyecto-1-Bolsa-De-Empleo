@@ -1,67 +1,34 @@
 package una.sistema.proyecto1bolsadeempleo.logic.model;
 
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
+@Entity
+@Table(name = "nacionalidad")
 public class Nacionalidad {
+
+    @Id
+    @Column(name = "iso", nullable = false, length = 5)
     private String iso;
+
+    @Column(name = "nombre", nullable = false, length = 100)
     private String nombre;
+
+    @Column(name = "descripcion", length = 255)
     private String descripcion;
+
+    @Column(name = "iso3", length = 5)
     private String iso3;
-    private int codigoNumero;
-    private int codigoTelefono;
 
-    public Nacionalidad(int codigoNumero, int codigoTelefono, String iso3, String descripcion, String iso, String nombre) {
-        this.codigoNumero = codigoNumero;
-        this.codigoTelefono = codigoTelefono;
-        this.iso3 = iso3;
-        this.descripcion = descripcion;
-        this.iso = iso;
-        this.nombre = nombre;
-    }
+    @Column(name = "codigoNumero")
+    private Integer codigoNumero;
 
-    public int getCodigoNumero() {
-        return codigoNumero;
-    }
-
-    public void setCodigoNumero(int codigoNumero) {
-        this.codigoNumero = codigoNumero;
-    }
-
-    public int getCodigoTelefono() {
-        return codigoTelefono;
-    }
-
-    public void setCodigoTelefono(int codigoTelefono) {
-        this.codigoTelefono = codigoTelefono;
-    }
-
-    public String getDescripcion() {
-        return descripcion;
-    }
-
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
-    }
-
-    public String getIso3() {
-        return iso3;
-    }
-
-    public void setIso3(String iso3) {
-        this.iso3 = iso3;
-    }
-
-    public String getIso() {
-        return iso;
-    }
-
-    public void setIso(String iso) {
-        this.iso = iso;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
+    @Column(name = "codigoTelefono")
+    private Integer codigoTelefono;
 }
