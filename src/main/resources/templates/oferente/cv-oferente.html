@@ -34,11 +34,13 @@
     </div>
 </nav>
 
+
+
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1" style="max-width: 600px;">
 
     <h3 class="mb-4">Mi CV</h3>
-
+    <div th:if="${error}" class="alert alert-danger" style="max-width: 450px;" th:text="${error}"></div>
     <!-- Botones principales -->
     <div class="d-flex gap-2 mb-4">
 

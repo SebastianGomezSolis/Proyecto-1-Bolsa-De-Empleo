@@ -71,7 +71,7 @@
                             <select class="form-select" th:field="*{nacionalidad}" required>
                                 <option value="">Seleccione una nacionalidad...</option>
                                 <option th:each="nac : ${nacionalidades}"
-                                        th:value="${nac.nombre}"
+                                        th:value="${nac.iso}"
                                         th:text="${nac.nombre}">
                                 </option>
                             </select>

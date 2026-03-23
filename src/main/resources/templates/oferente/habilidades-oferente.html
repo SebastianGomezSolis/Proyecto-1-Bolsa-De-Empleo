@@ -53,9 +53,14 @@
                 <tr th:each="h : ${habilidades}">
                     <td th:text="${h.caracteristica.nombre}"></td>
                     <td th:text="${h.nivel}"></td>
+                    <td>
+                        <form th:action="@{/oferente/habilidades/eliminar/{id}(id=${h.id})}" method="post">
+                            <button type="submit" class="btn btn-sm btn-outline-danger">Quitar</button>
+                        </form>
+                    </td>
                 </tr>
                 <tr th:if="${#lists.isEmpty(habilidades)}">
-                    <td colspan="2" class="text-muted text-center">Sin habilidades.</td>
+                    <td colspan="3" class="text-muted text-center">Sin habilidades.</td>
                 </tr>
                 </tbody>
             </table>
