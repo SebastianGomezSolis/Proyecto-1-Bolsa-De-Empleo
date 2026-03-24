@@ -160,7 +160,7 @@ public class PublicoController {
         model.addAttribute("tipoCambio", tipoCambio);
         return "publico/buscar-puesto-publica";
     }
-
+/*
     // ── REGISTRO EMPRESA ──────────────────────────────────────
     @GetMapping("/registro/empresa")
     public String registroEmpresaForm(Model model) {
@@ -250,7 +250,7 @@ public class PublicoController {
 
         return "publico/registrar-oferente-publica";
     }
-
+*/
     // ── LOGIN ─────────────────────────────────────────────────
     @GetMapping("/ingresar")
     public String login() {

@@ -9,28 +9,22 @@
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
-
     <h3 class="mb-1">Buscar puestos</h3>
     <p class="text-muted mb-4" style="font-size:0.9rem;">
         Filtrá por características para encontrar puestos que se ajusten a tu perfil.
     </p>
-
     <!-- Formulario de filtros -->
     <form th:action="@{/oferente/buscar}" method="get">
         <div class="border rounded p-3 bg-white mb-4">
             <h6 class="fw-bold mb-3">Buscar puestos por características</h6>
-
             <!-- Características en columnas, igual que la pública pero sin checkbox en raíces -->
             <div class="row">
                 <div th:each="raiz : ${raices}" class="col-md-3 mb-3">
-
                     <!-- Nombre de la raíz (solo label, sin checkbox) -->
                     <div class="fw-semibold text-secondary mb-1"
                          style="font-size:0.88rem;"
                          th:text="${raiz.nombre}"></div>
-
                     <div th:each="hijo : ${raiz.hijos}">
-
                         <!-- Hijo hoja: checkbox directo -->
                         <div th:if="${hijo.isHoja()}" class="form-check ms-1 mb-1">
                             <input class="form-check-input" type="checkbox"
@@ -43,7 +37,6 @@
                                    th:text="${hijo.nombre}"
                                    style="font-size:0.88rem;"></label>
                         </div>
-
                         <!-- Hijo con hijos: mostrar subcategoría en itálica y sus hojas con checkbox -->
                         <div th:unless="${hijo.isHoja()}">
                             <div class="text-muted ms-1 mb-1"
@@ -61,11 +54,9 @@
                                        style="font-size:0.88rem;"></label>
                             </div>
                         </div>
-
                     </div>
                 </div>
             </div>
-
             <div class="d-flex gap-2 mt-2">
                 <button type="submit" class="btn btn-dark btn-sm">Buscar</button>
                 <a th:href="@{/oferente/buscar}" class="btn btn-outline-secondary btn-sm">Limpiar</a>
@@ -76,14 +67,11 @@
     <!-- Resultados -->
     <div th:if="${puestos != null}">
         <h5 class="mb-3">Resultados</h5>
-
         <div th:if="${#lists.isEmpty(puestos)}" class="text-muted">
             No se encontraron puestos con las características seleccionadas.
         </div>
-
         <div th:each="puesto, iterStat : ${puestos}"
              class="border rounded bg-white p-3 mb-3">
-
             <div class="d-flex justify-content-between align-items-start mb-1">
                 <h6 class="mb-0 fw-bold" th:text="${puesto.empresa.nombre}"></h6>
                 <span th:if="${puesto.tipoPublicacion == 'privado'}"
@@ -95,9 +83,14 @@
 
             <p class="mb-2">
                 <strong>Salario:</strong>
-                ₡<span th:text="${#numbers.formatInteger(puesto.salario, 1, 'COMMA')}"></span>
+                $<span th:text="${#numbers.formatDecimal(puesto.salario, 1, 2)}"></span>
+                <span th:if="${tipoCambio != null}">
+                    / ₡<span th:text="${#numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 0)}"></span>
+                </span>
+                <span th:if="${tipoCambio == null}" class="text-muted" style="font-size:0.85rem;">
+                    (tipo de cambio no disponible)
+                </span>
             </p>
-
             <!-- Características colapsables -->
             <div th:if="${not #lists.isEmpty(puesto.caracteristicas)}">
                 <a class="text-dark text-decoration-none"
@@ -119,12 +112,10 @@
 
         </div>
     </div>
-
     <!-- Sin búsqueda aún -->
     <div th:if="${puestos == null}" class="text-muted">
         Seleccione características y presione <strong>Buscar</strong> para ver resultados.
     </div>
-
 </main>
 
 <!-- FOOTER -->

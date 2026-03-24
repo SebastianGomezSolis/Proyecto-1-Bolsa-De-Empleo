@@ -7,7 +7,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Empresa;
+import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
+import una.sistema.proyecto1bolsadeempleo.logic.servicios.PasswordHash;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -22,6 +24,9 @@ public class EmpresaController {
     @Autowired
     private ModeloDatos gestorDatos;
 
+    @Autowired
+    private PasswordHash passwordHash;
+
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         Empresa empresa = getEmpresaEnSesion();
@@ -32,6 +37,36 @@ public class EmpresaController {
 
         model.addAttribute("empresa", empresa);
         return "empresa/dashboard-empresa";
+    }
+
+    // En EmpresaController.java
+    @GetMapping("/registro")
+    public String registroEmpresaForm(Model model) {
+        model.addAttribute("empresa", new Empresa());
+        return "publico/registrar-empresa-publica";
+    }
+
+    @PostMapping("/registro")
+    public String registroEmpresaGuardar(@ModelAttribute Empresa empresa, Model model) {
+        if (gestorDatos.getEmpresaService().findByCorreo(empresa.getCorreo()) != null) {
+            model.addAttribute("error", "El correo ya está registrado.");
+            model.addAttribute("empresa", empresa);
+            return "publico/registrar-empresa-publica";
+        }
+
+        if (empresa.getClave() == null || empresa.getClave().isBlank()) {
+            model.addAttribute("error", "La clave es obligatoria.");
+            model.addAttribute("empresa", empresa);
+            return "publico/registrar-empresa-publica";
+        }
+
+        empresa.setClave(passwordHash.hash(empresa.getClave()));
+        empresa.setAutorizado(false);
+        gestorDatos.getEmpresaService().save(empresa);
+
+        model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
+        model.addAttribute("empresa", new Empresa());
+        return "publico/registrar-empresa-publica";
     }
 
     @GetMapping("/puestos")
@@ -121,6 +156,25 @@ public class EmpresaController {
             return "empresa/publicar-puesto-empresa";
         }
 
+    }
+
+    @GetMapping("/candidatos/{id}")
+    public String verDetalleCandidato(@PathVariable("id") String id, Model model) {
+        Empresa empresa = getEmpresaEnSesion();
+        if (empresa == null) {
+            return "redirect:/ingresar";
+        }
+
+        Oferente oferente = gestorDatos.getOferenteService().findById(id);
+        if (oferente == null) {
+            return "redirect:/empresa/puestos";
+        }
+
+        model.addAttribute("empresa", empresa);
+        model.addAttribute("oferente", oferente);
+        model.addAttribute("habilidades", gestorDatos.getHabilidadService().findByOferente(oferente.getIdentificacion()));
+
+        return "empresa/ver-detalles-candidatos-empresa";
     }
 
     private Empresa getEmpresaEnSesion() {

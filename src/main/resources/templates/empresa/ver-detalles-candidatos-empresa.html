@@ -20,7 +20,7 @@
         <p class="mb-1"><strong>Teléfono:</strong> <span th:text="${oferente.telefono}"></span></p>
         <p class="mb-1"><strong>Residencia:</strong> <span th:text="${oferente.lugarResidencia}"></span></p>
         <div th:if="${oferente.curriculum != null}" class="mt-2">
-            <a th:href="@{'/uploads/curriculos/' + ${oferente.identificacion} + '.pdf'}"
+            <a th:href="@{/uploads/curriculos/{id}.pdf(id=${oferente.identificacion})}"
                target="_blank" class="btn btn-dark btn-sm">Ver CV</a>
         </div>
     </div>

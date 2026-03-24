@@ -10,12 +10,9 @@
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
     <h3 class="mb-4">Mis habilidades</h3>
-
     <!-- Solo se muestra si el controlador mandó un error -->
     <div th:if="${error}" class="alert alert-warning" th:text="${error}"></div>
-
     <div class="row g-4">
-
         <!-- Columna izquierda: tabla habilidades -->
         <div class="col-md-4">
             <table class="table table-hover table-sm">
@@ -42,7 +39,6 @@
                 </tbody>
             </table>
         </div>
-
         <!-- Columna central: navegador jerárquico -->
         <div class="col-md-4">
 
@@ -58,11 +54,9 @@
                     </span>
                 </span>
             </div>
-
             <div th:if="${actual != null}" class="mb-2 text-muted" style="font-size:0.9rem;">
                 Subcategorías de: <strong th:text="${actual.nombre}"></strong>
             </div>
-
             <div th:each="sub : ${subcategorias}"
                  class="d-flex justify-content-between align-items-center border rounded px-3 py-2 mb-2 bg-white">
                 <span th:text="${sub.nombre}"></span>
@@ -73,12 +67,10 @@
                    th:href="@{/oferente/habilidades(actualId=${sub.id})}"
                    class="btn btn-outline-secondary btn-sm">Entrar</a>
             </div>
-
             <div th:if="${#lists.isEmpty(subcategorias)}" class="text-muted" style="font-size:0.9rem;">
                 No hay subcategorías.
             </div>
         </div>
-
         <!-- Columna derecha: formulario agregar -->
         <div class="col-md-4">
             <div class="border rounded p-3 bg-white">
@@ -98,13 +90,11 @@
                             </th:block>
                         </select>
                     </div>
-
                     <div class="mb-3">
                         <label for="nivel" class="form-label">Nivel (1-5)</label>
                         <input type="number" id="nivel" name="nivel"
                                class="form-control" min="1" max="5" value="1" required />
                     </div>
-
                     <button type="submit" class="btn btn-primary w-100">Agregar</button>
                 </form>
             </div>

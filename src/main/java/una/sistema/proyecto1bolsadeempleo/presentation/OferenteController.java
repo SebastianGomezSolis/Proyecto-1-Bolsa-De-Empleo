@@ -11,6 +11,9 @@ import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Caracteristica;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Habilidad;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
+import una.sistema.proyecto1bolsadeempleo.logic.model.TipoCambio;
+import una.sistema.proyecto1bolsadeempleo.logic.servicios.PasswordHash;
+import una.sistema.proyecto1bolsadeempleo.logic.servicios.TipoCambioServicio;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +30,9 @@ public class OferenteController {
     @Autowired
     private ModeloDatos gestorDatos;
 
+    @Autowired
+    private PasswordHash passwordHash;
+
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         Oferente oferente = getOferenteEnSesion();
@@ -37,6 +43,59 @@ public class OferenteController {
 
         model.addAttribute("oferente", oferente);
         return "oferente/dashboard-oferente";
+    }
+
+    @GetMapping("/registro")
+    public String registroOferenteForm(Model model) {
+        model.addAttribute("oferente", new Oferente());
+        model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+        return "publico/registrar-oferente-publica";
+    }
+
+    @PostMapping("/registro")
+    public String registroOferenteGuardar(@ModelAttribute Oferente oferente, Model model) {
+        if (gestorDatos.getOferenteService().findById(oferente.getIdentificacion()) != null) {
+            model.addAttribute("error", "La identificación ya está registrada.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+            return "publico/registrar-oferente-publica";
+        }
+
+        if (gestorDatos.getOferenteService().findByCorreo(oferente.getCorreo()) != null) {
+            model.addAttribute("error", "El correo ya está registrado.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+            return "publico/registrar-oferente-publica";
+        }
+
+        if (oferente.getClave() == null || oferente.getClave().isBlank()) {
+            model.addAttribute("error", "La clave es obligatoria.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+            return "publico/registrar-oferente-publica";
+        }
+
+        if (oferente.getNacionalidad() == null || oferente.getNacionalidad().isBlank()) {
+            model.addAttribute("error", "Debe seleccionar una nacionalidad.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+            return "publico/registrar-oferente-publica";
+        }
+
+        if (gestorDatos.getNacionalidadService().findByIso(oferente.getNacionalidad()) == null) {
+            model.addAttribute("error", "La nacionalidad seleccionada no es válida.");
+            model.addAttribute("oferente", oferente);
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+            return "publico/registrar-oferente-publica";
+        }
+
+        oferente.setClave(passwordHash.hash(oferente.getClave()));
+        gestorDatos.getOferenteService().registrar(oferente);
+
+        model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
+        model.addAttribute("oferente", new Oferente());
+        model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+        return "publico/registrar-oferente-publica";
     }
 
     @GetMapping("/habilidades")
@@ -233,13 +292,15 @@ public class OferenteController {
             return "redirect:/ingresar";
         }
 
+        TipoCambio tipoCambio = new TipoCambioServicio().obtenerTipoCambio();
+
         model.addAttribute("oferente", oferente);
         model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
+        model.addAttribute("tipoCambio", tipoCambio);
 
         if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
             model.addAttribute("puestos", null);
         } else {
-            // El oferente ve públicos Y privados
             List<una.sistema.proyecto1bolsadeempleo.logic.model.Puesto> todos =
                     gestorDatos.getPuestoService().findPorCaracteristicas(caracteristicaIds);
             model.addAttribute("puestos", todos);

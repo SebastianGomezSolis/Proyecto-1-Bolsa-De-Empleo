@@ -24,7 +24,7 @@
                     <!-- Mensaje de éxito -->
                     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
 
-                    <form th:action="@{/registro/empresa}" th:object="${empresa}" method="post">
+                    <form th:action="@{/empresa/registro}" th:object="${empresa}" method="post">
 
                         <div class="mb-3">
                             <label class="form-label">Nombre</label>
