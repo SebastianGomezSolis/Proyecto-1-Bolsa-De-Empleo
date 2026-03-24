@@ -10,8 +10,8 @@ Sistema web desarrollado en Java con Spring Boot (MVC, Server Side Rendering) pa
 ## 👥 Autores
 
 - Sebastián Gómez Solís - [@SebastianGomezSolis](https://github.com/SebastianGomezSolis)
-- Daniel Chacón González - [@DaniChacG05](https://github.com/DaniChacG05))
-- Julian Ramos Arias - [@JulianRamos95](https://github.com/JulianRamos95))
+- Daniel Chacón González - [@DaniChacG05](https://github.com/DaniChacG05)
+- Julian Ramos Arias - [@JulianRamos95](https://github.com/JulianRamos95)
 
 ---
 
