@@ -10,10 +10,7 @@ import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
 import una.sistema.proyecto1bolsadeempleo.logic.model.PuestoCaracteristica;
 
 import java.time.Instant;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class PuestoService {
@@ -32,6 +29,20 @@ public class PuestoService {
 
     public List<Puesto> findByEmpresa(Integer empresaId) {
         return puestoRepository.findByEmpresaId(empresaId);
+    }
+
+    public List<Puesto> findActivosAmbostiposPorCaracteristicas(List<Integer> ids) {
+        List<Puesto> publicos = puestoRepository.findByTipoPublicacionAndActivo("publico", true);
+        List<Puesto> privados = puestoRepository.findByTipoPublicacionAndActivo("privado", true);
+
+        List<Puesto> todos = new java.util.ArrayList<>();
+        todos.addAll(publicos);
+        todos.addAll(privados);
+
+        return todos.stream()
+                .filter(p -> p.getCaracteristicas().stream()
+                        .anyMatch(pc -> ids.contains(pc.getCaracteristica().getId())))
+                .collect(java.util.stream.Collectors.toList());
     }
 
     public Puesto crear(Puesto puesto) {
@@ -55,7 +66,21 @@ public class PuestoService {
     }
 
     public List<Puesto> findPorCaracteristicas(List<Integer> ids) {
-        return puestoRepository.findPublicosPorCaracteristicas(ids);
+        Iterable<Puesto> todos = puestoRepository.findAll();
+        List<Puesto> resultado = new ArrayList<>();
+
+        for (Puesto p : todos) {
+            if (!p.getActivo()) continue;
+
+            for (PuestoCaracteristica pc : p.getCaracteristicas()) {
+                if (ids.contains(pc.getCaracteristica().getId())) {
+                    resultado.add(p);
+                    break;
+                }
+            }
+        }
+
+        return resultado;
     }
 
     public List<Puesto> findPorFechaRegistroEntre(Instant inicio, Instant fin) {

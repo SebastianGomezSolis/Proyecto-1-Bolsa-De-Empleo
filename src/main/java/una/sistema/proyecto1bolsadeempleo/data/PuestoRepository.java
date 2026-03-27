@@ -15,7 +15,5 @@ public interface PuestoRepository extends CrudRepository<Puesto, Integer> {
     List<Puesto> findByEmpresaId(Integer empresaId);
     List<Puesto> findTop5ByTipoPublicacionAndActivoOrderByFechaRegistroDesc(String tipoPublicacion, Boolean activo);
     List<Puesto> findByTipoPublicacionAndActivo(String tipoPublicacion, Boolean activo);
-    @Query("SELECT DISTINCT p FROM Puesto p " + "JOIN p.caracteristicas pc " + "WHERE p.tipoPublicacion = 'publico' " + "AND p.activo = true " + "AND pc.caracteristica.id IN :ids")
-    List<Puesto> findPublicosPorCaracteristicas(@Param("ids") List<Integer> ids);
     List<Puesto> findByFechaRegistroBetween(Instant inicio, Instant fin);
 }

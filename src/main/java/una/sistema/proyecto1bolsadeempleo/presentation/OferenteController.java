@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
-import una.sistema.proyecto1bolsadeempleo.logic.model.Caracteristica;
-import una.sistema.proyecto1bolsadeempleo.logic.model.Habilidad;
-import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
-import una.sistema.proyecto1bolsadeempleo.logic.model.TipoCambio;
+import una.sistema.proyecto1bolsadeempleo.logic.model.*;
 import una.sistema.proyecto1bolsadeempleo.logic.servicios.PasswordHash;
 import una.sistema.proyecto1bolsadeempleo.logic.servicios.TipoCambioServicio;
 
@@ -308,8 +305,8 @@ public class OferenteController {
         if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
             model.addAttribute("puestos", null);
         } else {
-            List<una.sistema.proyecto1bolsadeempleo.logic.model.Puesto> todos =
-                    gestorDatos.getPuestoService().findPorCaracteristicas(caracteristicaIds);
+            List<Puesto> todos =
+                    gestorDatos.getPuestoService().findActivosAmbostiposPorCaracteristicas(caracteristicaIds);
             model.addAttribute("puestos", todos);
             model.addAttribute("caracteristicaIds", caracteristicaIds);
         }
