@@ -54,6 +54,12 @@ public class EmpresaController {
             return "publico/registrar-empresa-publica";
         }
 
+        if (gestorDatos.getEmpresaService().findByNombre(empresa.getNombre()) != null) {
+            model.addAttribute("error", "El nombre ya está registrado.");
+            model.addAttribute("empresa", empresa);
+            return "publico/registrar-empresa-publica";
+        }
+
         if (empresa.getClave() == null || empresa.getClave().isBlank()) {
             model.addAttribute("error", "La clave es obligatoria.");
             model.addAttribute("empresa", empresa);

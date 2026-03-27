@@ -23,6 +23,10 @@ public class EmpresaService {
         return empresaRepository.findByCorreo(correo).orElse(null);
     }
 
+    public Empresa findByNombre(String nombre) {
+        return empresaRepository.findByNombre(nombre).orElse(null);
+    }
+
     public List<Empresa> findPendientes() {
         return empresaRepository.findByAutorizado(false);
     }

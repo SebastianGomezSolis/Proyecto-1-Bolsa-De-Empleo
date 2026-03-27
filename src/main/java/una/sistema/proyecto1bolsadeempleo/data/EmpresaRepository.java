@@ -10,5 +10,6 @@ import java.util.Optional;
 @Repository
 public interface EmpresaRepository extends CrudRepository<Empresa, Integer> {
     Optional<Empresa> findByCorreo(String correo);
+    Optional<Empresa> findByNombre(String nombre);
     List<Empresa> findByAutorizado(boolean b);
 }
