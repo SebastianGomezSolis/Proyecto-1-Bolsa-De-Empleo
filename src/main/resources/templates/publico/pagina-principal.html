@@ -9,7 +9,6 @@
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
-
     <h2>Bolsa de Empleo</h2>
     <p class="text-muted">Últimos 5 puestos públicos</p>
 
@@ -26,9 +25,9 @@
                     <!-- Salario -->
                     <p>
                         <strong>Salario:</strong>
-                        $<span th:text="${#numbers.formatDecimal(puesto.salario, 1, 2)}"></span>
+                        <td th:text="${#numbers.formatCurrency(puesto.salario)}"></td>
                         /
-                        ₡<span th:text="${#numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 0)}"></span>
+                        ₡<span th:text="${#numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 'POINT', 2, 'COMMA')}"></span>
                     </p>
 
                     <!-- Botón que despliega las características al hacer clic -->

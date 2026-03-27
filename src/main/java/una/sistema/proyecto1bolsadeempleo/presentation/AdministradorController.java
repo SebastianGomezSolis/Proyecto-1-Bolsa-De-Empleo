@@ -32,6 +32,7 @@ public class AdministradorController {
         }
 
         model.addAttribute("admin", admin);
+        model.addAttribute("activeNav", "dashboard");
         return "administrador/dashboard-administrador";
     }
 
@@ -44,6 +45,7 @@ public class AdministradorController {
 
         model.addAttribute("admin", admin);
         model.addAttribute("empresas", gestorDatos.getEmpresaService().findPendientes());
+        model.addAttribute("activeNav", "empresasPendientes");
         return "administrador/empresas-pendientes-administrador";
     }
 
@@ -67,6 +69,7 @@ public class AdministradorController {
 
         model.addAttribute("admin", admin);
         model.addAttribute("oferentes", gestorDatos.getOferenteService().findPendientes());
+        model.addAttribute("activeNav", "oferentesPendientes");
         return "administrador/oferentes-pendientes-administrador";
     }
 
@@ -89,6 +92,7 @@ public class AdministradorController {
         }
 
         model.addAttribute("admin", admin);
+        model.addAttribute("activeNav", "reportes");
         return "administrador/reportes-administrador";
     }
 
@@ -156,7 +160,7 @@ public class AdministradorController {
         model.addAttribute("ruta", ruta);
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("todas", gestorDatos.getCaracteristicaService().findAll());
-
+        model.addAttribute("activeNav", "caracteristicas");
         return "administrador/caracteristicas-administrador";
     }
 

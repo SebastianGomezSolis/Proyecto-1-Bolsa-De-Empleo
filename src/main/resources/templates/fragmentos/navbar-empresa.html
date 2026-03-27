@@ -7,13 +7,13 @@
             </a>
             <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/empresa/dashboard}" style="font-size:0.9rem;">Dashboard</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'dashboard'} ? ' active' : ''" th:href="@{/empresa/dashboard}" style="font-size:0.9rem;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/empresa/puestos}" style="font-size:0.9rem;">Mis puestos</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'misPuestos'} ? ' active' : ''" th:href="@{/empresa/puestos}" style="font-size:0.9rem;">Mis puestos</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/empresa/puestos/publicar}" style="font-size:0.9rem;">Publicar puesto</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'publicarPuesto'} ? ' active' : ''" th:href="@{/empresa/puestos/publicar}" style="font-size:0.9rem;">Publicar puesto</a>
                 </li>
                 <li class="nav-item ms-auto d-flex align-items-center me-2">
                     <span class="text-white me-3" style="font-size:0.9rem;" th:text="${empresa.correo}">usuario@correo.com</span>

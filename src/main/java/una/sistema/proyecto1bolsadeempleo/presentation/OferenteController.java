@@ -42,6 +42,7 @@ public class OferenteController {
         }
 
         model.addAttribute("oferente", oferente);
+        model.addAttribute("activeNav", "dashboard");
         return "oferente/dashboard-oferente";
     }
 
@@ -49,6 +50,7 @@ public class OferenteController {
     public String registroOferenteForm(Model model) {
         model.addAttribute("oferente", new Oferente());
         model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+        model.addAttribute("activeNav", "regOferente");
         return "publico/registrar-oferente-publica";
     }
 
@@ -95,6 +97,7 @@ public class OferenteController {
         model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
         model.addAttribute("oferente", new Oferente());
         model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+        model.addAttribute("activeNav", "regOferente");
         return "publico/registrar-oferente-publica";
     }
 
@@ -134,6 +137,7 @@ public class OferenteController {
         model.addAttribute("subcategorias", subcategorias);
         model.addAttribute("ruta", ruta);
         model.addAttribute("selId", selId);
+        model.addAttribute("activeNav", "habilidades");
 
         return "oferente/habilidades-oferente";
     }
@@ -221,7 +225,7 @@ public class OferenteController {
 
         model.addAttribute("oferente", oferente);
         model.addAttribute("mostrarSubir", mostrarSubir);
-
+        model.addAttribute("activeNav", "cv");
         return "oferente/cv-oferente";
     }
 
@@ -237,6 +241,7 @@ public class OferenteController {
             model.addAttribute("oferente", oferente);
             model.addAttribute("mostrarSubir", true);
             model.addAttribute("error", "Debe seleccionar un archivo PDF.");
+            model.addAttribute("activeNav", "cv");
             return "oferente/cv-oferente";
         }
 
@@ -246,6 +251,7 @@ public class OferenteController {
             model.addAttribute("oferente", oferente);
             model.addAttribute("mostrarSubir", true);
             model.addAttribute("error", "Solo se permiten archivos PDF.");
+            model.addAttribute("activeNav", "cv");
             return "oferente/cv-oferente";
         }
 
@@ -278,6 +284,7 @@ public class OferenteController {
             model.addAttribute("oferente", oferente);
             model.addAttribute("mostrarSubir", true);
             model.addAttribute("error", "Ocurrió un error al subir el archivo.");
+            model.addAttribute("activeNav", "cv");
             return "oferente/cv-oferente";
         }
     }
@@ -297,6 +304,7 @@ public class OferenteController {
         model.addAttribute("oferente", oferente);
         model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
         model.addAttribute("tipoCambio", tipoCambio);
+        model.addAttribute("activeNav", "buscar");
 
         if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
             model.addAttribute("puestos", null);

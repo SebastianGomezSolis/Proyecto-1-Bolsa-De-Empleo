@@ -7,16 +7,16 @@
             </a>
             <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/oferente/dashboard}" style="font-size:0.9rem;">Dashboard</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'dashboard'} ? ' active' : ''" th:href="@{/oferente/dashboard}" style="font-size:0.9rem;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/oferente/habilidades}" style="font-size:0.9rem;">Mis habilidades</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'habilidades'} ? ' active' : ''" th:href="@{/oferente/habilidades}" style="font-size:0.9rem;">Mis habilidades</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/oferente/cv}" style="font-size:0.9rem;">Mi CV</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'cv'} ? ' active' : ''" th:href="@{/oferente/cv}" style="font-size:0.9rem;">Mi CV</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/oferente/buscar}" style="font-size:0.9rem;">Buscar puesto</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'buscar'} ? ' active' : ''" th:href="@{/oferente/buscar}" style="font-size:0.9rem;">Buscar puesto</a>
                 </li>
                 <li class="nav-item ms-auto d-flex align-items-center me-2">
                     <span class="text-white me-3" style="font-size:0.9rem;" th:text="${oferente.correo}">usuario@correo.com</span>

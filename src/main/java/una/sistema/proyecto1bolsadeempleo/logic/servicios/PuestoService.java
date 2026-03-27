@@ -66,12 +66,20 @@ public class PuestoService {
     @Transactional
     public Puesto desactivar(Integer id) {
         Puesto puesto = findById(id);
-
         if (puesto != null) {
             puesto.setActivo(false);
             puestoRepository.save(puesto);
         }
+        return puesto;
+    }
 
+    @Transactional
+    public Puesto activar(Integer id) {
+        Puesto puesto = findById(id);
+        if (puesto != null) {
+            puesto.setActivo(true);
+            puestoRepository.save(puesto);
+        }
         return puesto;
     }
 

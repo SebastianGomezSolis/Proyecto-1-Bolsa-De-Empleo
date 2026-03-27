@@ -36,6 +36,7 @@ public class EmpresaController {
         }
 
         model.addAttribute("empresa", empresa);
+        model.addAttribute("activeNav", "dashboard");
         return "empresa/dashboard-empresa";
     }
 
@@ -43,6 +44,7 @@ public class EmpresaController {
     @GetMapping("/registro")
     public String registroEmpresaForm(Model model) {
         model.addAttribute("empresa", new Empresa());
+        model.addAttribute("activeNav", "regEmpresa");
         return "publico/registrar-empresa-publica";
     }
 
@@ -66,6 +68,7 @@ public class EmpresaController {
 
         model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
         model.addAttribute("empresa", new Empresa());
+        model.addAttribute("activeNav", "regEmpresa");
         return "publico/registrar-empresa-publica";
     }
 
@@ -79,6 +82,7 @@ public class EmpresaController {
 
         model.addAttribute("empresa", empresa);
         model.addAttribute("puestos", gestorDatos.getPuestoService().findByEmpresa(empresa.getId()));
+        model.addAttribute("activeNav", "misPuestos");
         return "empresa/misPuestos-empresa";
     }
 
@@ -103,6 +107,7 @@ public class EmpresaController {
         model.addAttribute("empresa", empresa);
         model.addAttribute("puesto", puesto);
         model.addAttribute("candidatos", gestorDatos.getMatchingService().buscarCandidatosPorPuesto(id));
+        model.addAttribute("activeNav", "misPuestos");
 
         return "empresa/buscar-candidatos-empresa";
     }
@@ -116,6 +121,7 @@ public class EmpresaController {
 
         model.addAttribute("empresa", empresa);
         model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
+        model.addAttribute("activeNav", "publicarPuesto");
         return "empresa/publicar-puesto-empresa";
     }
 
@@ -153,6 +159,7 @@ public class EmpresaController {
             model.addAttribute("error", e.getMessage());
             model.addAttribute("empresa", empresa);
             model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
+            model.addAttribute("activeNav", "publicarPuesto");
             return "empresa/publicar-puesto-empresa";
         }
 
@@ -173,7 +180,7 @@ public class EmpresaController {
         model.addAttribute("empresa", empresa);
         model.addAttribute("oferente", oferente);
         model.addAttribute("habilidades", gestorDatos.getHabilidadService().findByOferente(oferente.getIdentificacion()));
-
+        model.addAttribute("activeNav", "misPuestos");
         return "empresa/ver-detalles-candidatos-empresa";
     }
 
@@ -181,31 +188,36 @@ public class EmpresaController {
         return (Empresa) session.getAttribute("empresa");
     }
 
+    // DESACTIVAR PUESTO
     @PostMapping("/puestos/desactivar/{id}")
     public String desactivarPuesto(@PathVariable("id") Integer id) {
-        // Se obtiene la empresa autenticada desde sesión
         Empresa empresa = getEmpresaEnSesion();
-        if (empresa == null) {
-            return "redirect:/ingresar";
-        }
+        if (empresa == null) return "redirect:/ingresar";
 
-        // Se busca el puesto por id
         Puesto puesto = gestorDatos.getPuestoService().findById(id);
-
-        // Si el puesto no existe, se regresa al listado
         if (puesto == null) {
             return "redirect:/empresa/puestos";
         }
 
-        // Validación de que solo la empresa dueña del puesto pueda eliminarlo
-        if (puesto.getEmpresa() == null || !puesto.getEmpresa().getId().equals(empresa.getId())) {
+        if (puesto.getEmpresa() == null || !puesto.getEmpresa().getId().equals(empresa.getId()))
             return "redirect:/empresa/puestos";
-        }
 
-        // Se delega al servicio la desactivación lógica del puesto
         gestorDatos.getPuestoService().desactivar(id);
+        return "redirect:/empresa/puestos";
+    }
 
-        // Se vuelve al listado de puestos de la empresa
+    // ACTIVAR PUESTO
+    @PostMapping("/puestos/activar/{id}")
+    public String activarPuesto(@PathVariable("id") Integer id) {
+        Empresa empresa = getEmpresaEnSesion();
+        if (empresa == null) return "redirect:/ingresar";
+
+        Puesto puesto = gestorDatos.getPuestoService().findById(id);
+        if (puesto == null) return "redirect:/empresa/puestos";
+        if (puesto.getEmpresa() == null || !puesto.getEmpresa().getId().equals(empresa.getId()))
+            return "redirect:/empresa/puestos";
+
+        gestorDatos.getPuestoService().activar(id);
         return "redirect:/empresa/puestos";
     }
 }

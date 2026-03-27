@@ -7,19 +7,19 @@
             </a>
             <ul class="navbar-nav flex-row" style="gap: 1.5rem; margin-left: 1rem; width: 100%;">
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/dashboard}" style="font-size:0.9rem;">Dashboard</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'dashboard'} ? ' active' : ''" th:href="@{/admin/dashboard}" style="font-size:0.9rem;">Dashboard</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/empresas/pendientes}" style="font-size:0.9rem;">Empresas pendientes</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'empresasPendientes'} ? ' active' : ''" th:href="@{/admin/empresas/pendientes}" style="font-size:0.9rem;">Empresas pendientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/oferentes/pendientes}" style="font-size:0.9rem;">Oferentes pendientes</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'oferentesPendientes'} ? ' active' : ''" th:href="@{/admin/oferentes/pendientes}" style="font-size:0.9rem;">Oferentes pendientes</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/caracteristicas}" style="font-size:0.9rem;">Características</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'caracteristicas'} ? ' active' : ''" th:href="@{/admin/caracteristicas}" style="font-size:0.9rem;">Características</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" th:href="@{/admin/reportes}" style="font-size:0.9rem;">Reportes</a>
+                    <a class="nav-link" th:classappend="${activeNav == 'reportes'} ? ' active' : ''" th:href="@{/admin/reportes}" style="font-size:0.9rem;">Reportes</a>
                 </li>
                 <li class="nav-item ms-auto d-flex align-items-center me-2">
                     <span class="text-white me-3" style="font-size:0.9rem;" th:text="${admin.correo}">usuario@correo.com</span>

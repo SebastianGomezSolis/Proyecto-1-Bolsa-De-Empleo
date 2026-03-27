@@ -75,9 +75,12 @@
                     <h6 class="fw-bold" th:text="${puesto.empresa.nombre}">Empresa</h6>
                     <p class="mb-1" th:text="${puesto.descripcion}">Descripción</p>
                     <p class="fw-bold mb-0">
-                        $<span th:text="${#numbers.formatDecimal(puesto.salario, 1, 2)}"></span>
+                        <td th:text="${#numbers.formatCurrency(puesto.salario)}"></td>
                         /
-                        ₡<span th:text="${tipoCambio != null ? #numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 0) : 'No disponible'}"></span>
+                        ₡<span th:text="${#numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 'POINT', 2, 'COMMA')}"></span>
+                        <span th:if="${tipoCambio == null}" class="text-muted" style="font-size:0.85rem;">
+                            (tipo de cambio no disponible)
+                        </span>
                     </p>
                 </div>
             </div>

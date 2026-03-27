@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface NacionalidadRepository extends CrudRepository<Nacionalidad, String> {
-
     List<Nacionalidad> findAllByOrderByNombreAsc();
 }

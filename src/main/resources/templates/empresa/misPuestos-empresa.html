@@ -26,20 +26,31 @@
         <tr th:each="puesto : ${puestos}">
             <td th:text="${puesto.id}"></td>
             <td th:text="${puesto.descripcion}"></td>
-            <td th:text="${puesto.salario}"></td>
+            <td th:text="${#numbers.formatCurrency(puesto.salario)}"></td>
             <td>
                 <span class="badge bg-success" th:if="${puesto.activo}">Sí</span>
                 <span class="badge bg-secondary" th:unless="${puesto.activo}">No</span>
             </td>
-            <td>
-                <form th:action="@{/empresa/puestos/desactivar/{id}(id=${puesto.id})}"
-                      method="post" class="d-inline">
-                    <button type="submit" class="btn btn-dark btn-sm"
-                            th:disabled="${!puesto.activo}">Desactivar</button>
+            <td class="d-flex gap-1 flex-wrap">
+                <form th:if="${puesto.activo}"
+                      th:action="@{/empresa/puestos/desactivar/{id}(id=${puesto.id})}"
+                      method="post">
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Desactivar</button>
                 </form>
+
+                <form th:unless="${puesto.activo}"
+                      th:action="@{/empresa/puestos/activar/{id}(id=${puesto.id})}"
+                      method="post">
+                    <button type="submit" class="btn btn-outline-success btn-sm">Activar</button>
+                </form>
+
                 <a th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}"
-                   class="btn btn-dark btn-sm ms-1">Buscar candidatos</a>
+                   class="btn btn-dark btn-sm">Buscar candidatos</a>
             </td>
+        </tr>
+        </tr>
+        <tr th:if="${#lists.isEmpty(puestos)}">
+            <td colspan="5" class="text-muted text-center">No tenés puestos publicados aún.</td>
         </tr>
         </tbody>
     </table>

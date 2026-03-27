@@ -110,7 +110,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
@@ -140,6 +139,7 @@ public class PublicoController {
         TipoCambioServicio tcServicio = new TipoCambioServicio();
         TipoCambio tipoCambio = tcServicio.obtenerTipoCambio();
         model.addAttribute("tipoCambio", tipoCambio);
+        model.addAttribute("activeNav", "inicio");
         return "publico/pagina-principal";
     }
 
@@ -158,12 +158,14 @@ public class PublicoController {
         TipoCambioServicio tcServicio = new TipoCambioServicio();
         TipoCambio tipoCambio = tcServicio.obtenerTipoCambio();
         model.addAttribute("tipoCambio", tipoCambio);
+        model.addAttribute("activeNav", "buscar");
         return "publico/buscar-puesto-publica";
     }
 
     // ── LOGIN ─────────────────────────────────────────────────
     @GetMapping("/ingresar")
-    public String login() {
+    public String login(Model model) {
+        model.addAttribute("activeNav", "login");
         return "publico/login";
     }
 
@@ -216,6 +218,7 @@ public class PublicoController {
         }
 
         model.addAttribute("error", "Usuario o contraseña incorrectos");
+        model.addAttribute("activeNav", "login");
         return "publico/login";
     }
 
