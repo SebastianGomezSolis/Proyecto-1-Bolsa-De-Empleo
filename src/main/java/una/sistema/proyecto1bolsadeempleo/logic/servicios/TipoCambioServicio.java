@@ -30,7 +30,6 @@ public class TipoCambioServicio {
 
             JSONObject json = new JSONObject(respuesta.toString());
 
-            // La API devuelve objetos anidados: {"fecha":"...","valor":463.24}
             double compra = json.getJSONObject("compra").getDouble("valor");
             double venta  = json.getJSONObject("venta").getDouble("valor");
 

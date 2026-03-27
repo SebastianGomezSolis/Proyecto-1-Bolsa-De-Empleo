@@ -21,13 +21,10 @@ public class NacionalidadExcelLoader implements CommandLineRunner {
 
     @Override
     public void run(String... args) throws Exception {
-
-        // Si la tabla ya tiene datos, no se vuelve a cargar el Excel
         if (nacionalidadService.count() > 0) {
             return;
         }
 
-        // Se abre el archivo Excel desde resources
         ClassPathResource resource = new ClassPathResource("nacionalidades.xlsx");
 
         try (InputStream inputStream = resource.getInputStream();
@@ -50,7 +47,6 @@ public class NacionalidadExcelLoader implements CommandLineRunner {
                 String codigoNumeroTexto = formatter.formatCellValue(row.getCell(4)).trim();
                 String codigoTelefonoTexto = formatter.formatCellValue(row.getCell(5)).trim();
 
-                // Si no hay ISO o nombre, la fila no se procesa
                 if (iso.isBlank() || nombre.isBlank()) {
                     continue;
                 }
@@ -63,21 +59,17 @@ public class NacionalidadExcelLoader implements CommandLineRunner {
                 nacionalidad.setCodigoNumero(parseEntero(codigoNumeroTexto));
                 nacionalidad.setCodigoTelefono(parseEntero(codigoTelefonoTexto));
 
-                // Se guarda en la base de datos
                 nacionalidadService.save(nacionalidad);
             }
         }
     }
 
     private Integer parseEntero(String valor) {
-
-        // Si viene vacío, se guarda como null
         if (valor == null || valor.isBlank()) {
             return null;
         }
 
         try {
-            // DataFormatter ya suele devolverlo limpio, pero igual se asegura
             return Integer.parseInt(valor.replace(".0", "").trim());
         } catch (NumberFormatException e) {
             return null;

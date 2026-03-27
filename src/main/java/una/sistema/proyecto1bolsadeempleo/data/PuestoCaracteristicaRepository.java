@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface PuestoCaracteristicaRepository extends CrudRepository<PuestoCaracteristica, Integer> {
-    // Todas las características requeridas de un puesto
     List<PuestoCaracteristica> findByPuestoId(Integer puestoId);
 }

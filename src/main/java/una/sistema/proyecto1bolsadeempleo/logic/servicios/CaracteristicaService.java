@@ -33,19 +33,16 @@ public class CaracteristicaService {
     }
 
     public boolean existeEnMismoNivel(String nombre, Integer padreId) {
-        // Validación
         if (nombre == null || nombre.isBlank()) {
             return false;
         }
 
         String nombreLimpio = nombre.trim();
 
-        // Si el padre es null, se valida entre las raices ya existentes
         if (padreId == null) {
             return caracteristicaRepository.existsByNombreIgnoreCaseAndPadreIsNull(nombreLimpio);
         }
 
-        // Si existe padreId, solo se valida con los hijos de ese padre
         return caracteristicaRepository.existsByNombreIgnoreCaseAndPadreId(nombreLimpio, padreId);
     }
 

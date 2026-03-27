@@ -9,12 +9,7 @@ import java.util.List;
 @Repository
 public interface CaracteristicaRepository extends CrudRepository<Caracteristica, Integer> {
     List<Caracteristica> findByPadreIsNull();
-
     List<Caracteristica> findByPadreId(Integer padreId);
-
     boolean existsByNombreIgnoreCaseAndPadreId(String nombre, Integer padreId);
-
     boolean existsByNombreIgnoreCaseAndPadreIsNull(String nombre);
-
-    // Se usan esos nombres para poder usar spring
 }

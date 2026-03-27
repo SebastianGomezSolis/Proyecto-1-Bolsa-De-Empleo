@@ -115,46 +115,32 @@ public class AdministradorController {
         response.getOutputStream().flush();
     }
 
-    // metodo auxiliar...
-    private Administrador getAdminEnSesion() {
-        return (Administrador) session.getAttribute("administrador");
-    }
-
     @GetMapping("/caracteristicas")
     public String caracteristicas(@RequestParam(value = "actualId", required = false) Integer actualId, Model model) {
 
-        // Se valida que haya un admin en sesión
         Administrador admin = getAdminEnSesion();
         if (admin == null) {
             return "redirect:/ingresar";
         }
 
-        // Se declara la característica actual (la que el admin está viendo)
         Caracteristica actual = null;
 
-        // Lista de subcategorías que se mostrarán en pantalla
         List<Caracteristica> subcategorias;
 
-        // Si no se recibe actualId, se muestran las raíces del árbol
         if (actualId == null) {
             subcategorias = gestorDatos.getCaracteristicaService().findRaices();
         } else {
-            // Si sí se recibe actualId, se busca la característica actual
             actual = gestorDatos.getCaracteristicaService().findById(actualId);
 
-            // Si no existe, se vuelve a mostrar la raíz del árbol
             if (actual == null) {
                 subcategorias = gestorDatos.getCaracteristicaService().findRaices();
             } else {
-                // Se muestran los hijos del nodo actual
                 subcategorias = gestorDatos.getCaracteristicaService().findHijos(actualId);
             }
         }
 
-        // Se construye la ruta de navegación
         List<Caracteristica> ruta = construirRuta(actual);
 
-        // Se envían todos los datos que el HTML necesita
         model.addAttribute("admin", admin);
         model.addAttribute("actual", actual);
         model.addAttribute("ruta", ruta);
@@ -170,14 +156,11 @@ public class AdministradorController {
                                       @RequestParam(value = "actualId", required = false) Integer actualId,
                                       RedirectAttributes redirectAttributes) {
 
-        // Se valida que exista un administrador autenticado en sesión
         Administrador admin = getAdminEnSesion();
         if (admin == null) {
             return "redirect:/ingresar";
         }
 
-        // Validación básica del nombre
-        // Se usa addFlashAttribute para enviar un mensaje temporal entre redirects
         if (nombre == null || nombre.isBlank()) {
             redirectAttributes.addFlashAttribute("error", "El nombre de la característica es obligatorio.");
 
@@ -189,7 +172,6 @@ public class AdministradorController {
 
         String nombreLimpio = nombre.trim();
 
-        // Validación para evitar duplicados en el mismo nivel del árbol
         if (gestorDatos.getCaracteristicaService().existeEnMismoNivel(nombreLimpio, padreId)) {
             redirectAttributes.addFlashAttribute(
                     "error",
@@ -202,11 +184,9 @@ public class AdministradorController {
             return "redirect:/admin/caracteristicas";
         }
 
-        // Se crea la nueva característica
         Caracteristica caracteristica = new Caracteristica();
         caracteristica.setNombre(nombreLimpio);
 
-        // Si se seleccionó un padre, se busca y se asigna
         if (padreId != null) {
             Caracteristica padre = gestorDatos.getCaracteristicaService().findById(padreId);
             if (padre != null) {
@@ -214,13 +194,10 @@ public class AdministradorController {
             }
         }
 
-        // Se guarda la característica
         gestorDatos.getCaracteristicaService().save(caracteristica);
 
-        // Mensaje de éxito opcional
         redirectAttributes.addFlashAttribute("exito", "Característica creada correctamente.");
 
-        // Se redirige al nivel actual del árbol para mantener el contexto
         if (actualId != null) {
             return "redirect:/admin/caracteristicas?actualId=" + actualId;
         }
@@ -229,11 +206,8 @@ public class AdministradorController {
     }
 
     private List<Caracteristica> construirRuta(Caracteristica actual) {
-
-        // Lista donde se guardará la ruta desde la raíz hasta el nodo actual
         List<Caracteristica> ruta = new ArrayList<>();
 
-        // Se recorre hacia arriba usando la relación padre
         Caracteristica cursor = actual;
         while (cursor != null) {
             ruta.addFirst(cursor);
@@ -241,5 +215,9 @@ public class AdministradorController {
         }
 
         return ruta;
+    }
+
+    private Administrador getAdminEnSesion() {
+        return (Administrador) session.getAttribute("administrador");
     }
 }

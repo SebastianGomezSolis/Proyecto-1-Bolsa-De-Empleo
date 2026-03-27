@@ -12,15 +12,10 @@ import java.util.List;
 
 @Repository
 public interface PuestoRepository extends CrudRepository<Puesto, Integer> {
-    // Puestos de una empresa
     List<Puesto> findByEmpresaId(Integer empresaId);
-    // Los 5 puestos públicos más recientes (página principal)
     List<Puesto> findTop5ByTipoPublicacionAndActivoOrderByFechaRegistroDesc(String tipoPublicacion, Boolean activo);
-    // Puestos públicos activos (búsqueda pública)
     List<Puesto> findByTipoPublicacionAndActivo(String tipoPublicacion, Boolean activo);
-    // PuestoRepository.java
     @Query("SELECT DISTINCT p FROM Puesto p " + "JOIN p.caracteristicas pc " + "WHERE p.tipoPublicacion = 'publico' " + "AND p.activo = true " + "AND pc.caracteristica.id IN :ids")
     List<Puesto> findPublicosPorCaracteristicas(@Param("ids") List<Integer> ids);
-    // Reporte por rango de fechas
     List<Puesto> findByFechaRegistroBetween(Instant inicio, Instant fin);
 }

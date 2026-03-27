@@ -8,6 +8,5 @@ import java.util.List;
 
 @Repository
 public interface HabilidadRepository extends CrudRepository<Habilidad, Integer> {
-    // Todas las habilidades de un oferente
     List<Habilidad> findByOferenteIdentificacion(String identificacion);
 }

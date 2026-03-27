@@ -40,7 +40,6 @@ public class EmpresaController {
         return "empresa/dashboard-empresa";
     }
 
-    // En EmpresaController.java
     @GetMapping("/registro")
     public String registroEmpresaForm(Model model) {
         model.addAttribute("empresa", new Empresa());
@@ -140,22 +139,11 @@ public class EmpresaController {
         }
 
         try {
-            // El controlador delega la lógica completa de creación al servicio
-            gestorDatos.getPuestoService().crearConCaracteristicas(
-                    descripcion,
-                    salario,
-                    tipoPublicacion,
-                    empresa,
-                    caracteristicaIds,
-                    parametrosFormulario
-            );
-
-            // Si salió bien, se redirige al listado de puestos de la empresa
+            gestorDatos.getPuestoService().crearConCaracteristicas(descripcion, salario, tipoPublicacion, empresa, caracteristicaIds, parametrosFormulario);
             return "redirect:/empresa/puestos";
 
         } catch (IllegalArgumentException e){
 
-            // Si hubo una validación de negocio, se regresa al formulario con el error
             model.addAttribute("error", e.getMessage());
             model.addAttribute("empresa", empresa);
             model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());
