@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <!-- HEAD -->
 <div th:replace="fragmentos/head :: head"></div>
+
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <!-- NAV -->
@@ -11,29 +12,25 @@
 <main class="container my-4 flex-grow-1" style="max-width: 600px;">
     <h3 class="mb-4">Mi CV</h3>
     <div th:if="${error}" class="alert alert-danger" style="max-width: 450px;" th:text="${error}"></div>
-    <!-- Botones principales -->
+
     <div class="d-flex gap-2 mb-4">
-        <!-- Ver CV: solo aparece si ya tiene uno subido -->
-        <a th:if="${oferente.curriculum != null}"
-           th:href="@{'/uploads/curriculos/' + ${oferente.identificacion} + '.pdf'}"
+
+        <a th:if="${oferente.curriculum != null}" th:href="@{'/uploads/curriculos/' + ${oferente.identificacion} + '.pdf'}"
            target="_blank" class="btn btn-dark">Ver CV</a>
 
-        <span th:if="${oferente.curriculum == null}"
-              class="btn btn-dark disabled">Ver CV</span>
-        <!-- Subir CV: recarga la página con ?subir=true -->
+        <span th:if="${oferente.curriculum == null}" class="btn btn-dark disabled">Ver CV</span>
+
         <a th:href="@{/oferente/cv(subir=true)}" class="btn btn-dark">Subir CV</a>
     </div>
-    <!-- Mensaje si no tiene CV -->
-    <div th:if="${oferente.curriculum == null and !mostrarSubir}"
-         class="alert alert-warning" style="max-width: 450px;">
+
+    <div th:if="${oferente.curriculum == null and !mostrarSubir}" class="alert alert-warning" style="max-width: 450px;">
         Aún no tenés un CV subido. Presioná <strong>Subir CV</strong> para agregar uno.
     </div>
-    <!-- Mensaje si ya tiene CV -->
-    <div th:if="${oferente.curriculum != null and !mostrarSubir}"
-         class="alert alert-success" style="max-width: 450px;">
+
+    <div th:if="${oferente.curriculum != null and !mostrarSubir}" class="alert alert-success" style="max-width: 450px;">
         Ya tenés un CV subido. Podés verlo o reemplazarlo cuando quieras.
     </div>
-    <!-- Formulario subir CV: se muestra solo si mostrarSubir=true -->
+
     <div th:if="${mostrarSubir}" class="border rounded p-4 bg-white" style="max-width: 450px;">
         <h5 class="mb-3">Subir nuevo CV</h5>
         <p class="text-muted" style="font-size:0.88rem;">

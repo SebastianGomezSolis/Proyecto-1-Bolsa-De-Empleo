@@ -9,10 +9,7 @@
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
-
     <h3>Detalle de oferente</h3>
-
-    <!-- Datos del oferente -->
     <div class="border rounded p-3 mb-4">
         <h5 th:text="${oferente.nombre} + ' ' + ${oferente.primerApellido}"></h5>
         <p class="mb-1"><strong>Identificación:</strong> <span th:text="${oferente.identificacion}"></span></p>
@@ -25,7 +22,6 @@
         </div>
     </div>
 
-    <!-- Habilidades -->
     <h5>Habilidades</h5>
     <table class="table table-hover">
         <thead>
@@ -45,8 +41,11 @@
         </tbody>
     </table>
 
-    <a href="javascript:history.back()" class="btn btn-dark btn-sm">Volver</a>
-
+    <div th:if="${puesto != null}">
+        <a th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}" class="btn btn-dark btn-sm">
+            Volver
+        </a>
+    </div>
 </main>
 
 <!-- FOOTER -->

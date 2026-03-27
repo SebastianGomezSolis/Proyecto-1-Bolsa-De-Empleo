@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <!-- HEAD -->
 <div th:replace="fragmentos/head :: head"></div>
+
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <!-- NAV -->
@@ -27,7 +28,7 @@
             <td th:text="${c.requisitosCumplidos} + ' / ' + ${c.totalRequisitos}"></td>
             <td th:text="${#numbers.formatDecimal(c.porcentaje, 1, 2)} + '%'"></td>
             <td>
-                <a th:href="@{/empresa/candidatos/{id}(id=${c.oferente.identificacion})}"
+                <a th:href="@{/empresa/candidatos/{id}(id=${c.oferente.identificacion}, puestoId=${puesto.id})}"
                    class="btn btn-outline-dark btn-sm">Ver detalle</a>
             </td>
         </tr>

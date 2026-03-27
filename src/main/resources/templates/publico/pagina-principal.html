@@ -11,18 +11,14 @@
 <main class="container my-4 flex-grow-1">
     <h2>Bolsa de Empleo</h2>
     <p class="text-muted">Últimos 5 puestos públicos</p>
-
     <div class="row g-3 align-items-start">
-
         <div class="col-md-4" th:each="puesto, iterStat : ${puestos}">
             <div class="card h-100">
                 <div class="card-body d-flex flex-column">
 
-                    <!-- Empresa y descripción -->
                     <h6 class="fw-bold mb-0" th:text="${puesto.empresa.nombre}">Empresa</h6>
                     <p class="text-muted mb-2" th:text="${puesto.descripcion}">Descripción</p>
 
-                    <!-- Salario -->
                     <p>
                         <strong>Salario:</strong>
                         <td th:text="${#numbers.formatCurrency(puesto.salario)}"></td>
@@ -30,7 +26,6 @@
                         ₡<span th:text="${#numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 'POINT', 2, 'COMMA')}"></span>
                     </p>
 
-                    <!-- Botón que despliega las características al hacer clic -->
                     <div class="mt-auto">
                         <a class="btn btn-outline-dark w-100"
                            data-bs-toggle="collapse"
@@ -39,7 +34,6 @@
                             Ver detalle
                         </a>
 
-                        <!-- Características del puesto (se despliegan al hacer clic) -->
                         <div class="collapse mt-2 border rounded p-2 bg-white"
                              th:id="'detalle-' + ${iterStat.index}">
                             <p class="fw-bold mb-1" th:text="${puesto.descripcion}">Puesto</p>

@@ -20,7 +20,6 @@ import java.util.List;
 
 @Service
 public class ReporteService {
-
     @Autowired
     private PuestoService puestoService;
 

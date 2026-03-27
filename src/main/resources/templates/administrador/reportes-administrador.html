@@ -9,22 +9,17 @@
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
-
     <h3 class="mb-1">Reportes</h3>
     <p class="text-muted mb-4" style="font-size:0.9rem;">
-        Generá reportes de puestos publicados por mes y año en formato PDF.
+        Aqui puedes generar reportes de puestos publicados por mes y año en formato PDF.
     </p>
-
     <div class="border rounded p-4 bg-white" style="max-width: 450px;">
         <h6 class="fw-bold mb-3">Reporte de puestos por mes</h6>
         <p class="text-muted mb-3" style="font-size:0.88rem;">
             Seleccione el mes y el año para descargar el reporte en PDF con todos los puestos publicados en ese período.
         </p>
-
         <form th:action="@{/admin/reportes/pdf}" method="get" target="_blank">
             <div class="row g-3 mb-3">
-
-                <!-- Mes -->
                 <div class="col">
                     <label for="mes" class="form-label fw-semibold">Mes</label>
                     <select id="mes" name="mes" class="form-select" required>
@@ -42,15 +37,10 @@
                         <option value="12">Diciembre</option>
                     </select>
                 </div>
-
-                <!-- Año -->
                 <div class="col">
                     <label for="anio" class="form-label fw-semibold">Año</label>
-                    <input type="number" id="anio" name="anio"
-                           class="form-control" value="2026"
-                           min="2020" max="2099" required />
+                    <input type="number" id="anio" name="anio" class="form-control" value="2026" min="2000" max="2099" required />
                 </div>
-
             </div>
 
             <button type="submit" class="btn btn-dark">

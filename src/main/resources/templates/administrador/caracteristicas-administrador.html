@@ -9,19 +9,14 @@
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
-
     <h3 class="mb-4">Características</h3>
 
     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
 
     <div class="row g-4">
-
-        <!-- Columna izquierda: navegador jerárquico -->
         <div class="col-md-6">
             <div class="border rounded p-3 bg-white">
-
-                <!-- Ruta breadcrumb -->
                 <div class="mb-2">
                     <span class="fw-semibold">Ruta:</span>
                     <span class="ms-1">
@@ -36,13 +31,11 @@
                     </span>
                 </div>
 
-                <!-- Descripción del nivel actual -->
                 <p class="text-muted mb-3" style="font-size:0.88rem;">
                     Subcategorías de:
                     <strong th:text="${actual != null ? actual.nombre : 'raíces'}"></strong>
                 </p>
 
-                <!-- Lista de subcategorías -->
                 <div th:each="sub : ${subcategorias}"
                      class="d-flex justify-content-between align-items-center border rounded px-3 py-2 mb-2 bg-light">
                     <span th:text="${sub.nombre}" class="fw-semibold"></span>
@@ -50,30 +43,23 @@
                        class="btn btn-outline-secondary btn-sm">Entrar</a>
                 </div>
 
-                <div th:if="${#lists.isEmpty(subcategorias)}"
-                     class="text-muted" style="font-size:0.88rem;">
+                <div th:if="${#lists.isEmpty(subcategorias)}" class="text-muted" style="font-size:0.88rem;">
                     Esta categoría no tiene subcategorías.
                 </div>
 
             </div>
         </div>
 
-        <!-- Columna derecha: formulario agregar -->
         <div class="col-md-4">
             <div class="border rounded p-3 bg-white">
                 <h6 class="fw-bold mb-3">Agregar Característica</h6>
-
                 <form th:action="@{/admin/caracteristicas/crear}" method="post">
-
                     <div class="row g-3 align-items-end mb-3">
-                        <!-- Nombre -->
                         <div class="col">
                             <label for="nombre" class="form-label">Nombre</label>
                             <input type="text" id="nombre" name="nombre"
                                    class="form-control" required />
                         </div>
-
-                        <!-- Padre -->
                         <div class="col">
                             <label for="padreId" class="form-label">Padre</label>
                             <select id="padreId" name="padreId" class="form-select">
@@ -87,9 +73,7 @@
                         </div>
                     </div>
 
-                    <!-- Guardar actualId para volver al mismo nivel -->
-                    <input type="hidden" name="actualId"
-                           th:value="${actual != null ? actual.id : null}" />
+                    <input type="hidden" name="actualId" th:value="${actual != null ? actual.id : null}" />
 
                     <button type="submit" class="btn btn-primary">Crear</button>
                 </form>

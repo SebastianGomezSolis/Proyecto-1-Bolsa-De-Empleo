@@ -17,10 +17,11 @@
                         <h4 class="mb-4">Registro de Oferente</h4>
                         <img th:src="@{/images/oferente.png}" alt="Imagen de registro" class="img-fluid" style="max-width: 100px;">
                     </div>
-                    <!-- Mensaje de error -->
+
                     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
-                    <!-- Mensaje de éxito -->
+
                     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
+
                     <form th:action="@{/oferente/registro}" th:object="${oferente}" method="post">
                         <div class="mb-3">
                             <label class="form-label">Identificación</label>

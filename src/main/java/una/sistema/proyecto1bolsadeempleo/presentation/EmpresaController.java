@@ -11,7 +11,6 @@ import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
 import una.sistema.proyecto1bolsadeempleo.logic.model.Puesto;
 import una.sistema.proyecto1bolsadeempleo.logic.servicios.PasswordHash;
 
-import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
@@ -154,7 +153,7 @@ public class EmpresaController {
     }
 
     @GetMapping("/candidatos/{id}")
-    public String verDetalleCandidato(@PathVariable("id") String id, Model model) {
+    public String verDetalleCandidato(@PathVariable("id") String id, @RequestParam("puestoId") Integer puestoId, Model model) {
         Empresa empresa = getEmpresaEnSesion();
         if (empresa == null) {
             return "redirect:/ingresar";
@@ -165,9 +164,12 @@ public class EmpresaController {
             return "redirect:/empresa/puestos";
         }
 
+        Puesto puesto = gestorDatos.getPuestoService().findById(puestoId);
+
         model.addAttribute("empresa", empresa);
         model.addAttribute("oferente", oferente);
         model.addAttribute("habilidades", gestorDatos.getHabilidadService().findByOferente(oferente.getIdentificacion()));
+        model.addAttribute("puesto", puesto);
         model.addAttribute("activeNav", "misPuestos");
         return "empresa/ver-detalles-candidatos-empresa";
     }

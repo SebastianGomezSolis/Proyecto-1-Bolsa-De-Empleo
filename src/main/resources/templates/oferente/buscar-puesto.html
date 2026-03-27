@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <!-- HEAD -->
 <div th:replace="fragmentos/head :: head"></div>
+
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <!-- NAV -->
@@ -13,19 +14,18 @@
     <p class="text-muted mb-4" style="font-size:0.9rem;">
         Filtrá por características para encontrar puestos que se ajusten a tu perfil.
     </p>
-    <!-- Formulario de filtros -->
     <form th:action="@{/oferente/buscar}" method="get">
         <div class="border rounded p-3 bg-white mb-4">
             <h6 class="fw-bold mb-3">Buscar puestos por características</h6>
-            <!-- Características en columnas, igual que la pública pero sin checkbox en raíces -->
+
             <div class="row">
                 <div th:each="raiz : ${raices}" class="col-md-3 mb-3">
-                    <!-- Nombre de la raíz (solo label, sin checkbox) -->
+
                     <div class="fw-semibold text-secondary mb-1"
                          style="font-size:0.88rem;"
                          th:text="${raiz.nombre}"></div>
                     <div th:each="hijo : ${raiz.hijos}">
-                        <!-- Hijo hoja: checkbox directo -->
+
                         <div th:if="${hijo.isHoja()}" class="form-check ms-1 mb-1">
                             <input class="form-check-input" type="checkbox"
                                    name="caracteristicaIds"
@@ -37,7 +37,7 @@
                                    th:text="${hijo.nombre}"
                                    style="font-size:0.88rem;"></label>
                         </div>
-                        <!-- Hijo con hijos: mostrar subcategoría en itálica y sus hojas con checkbox -->
+
                         <div th:unless="${hijo.isHoja()}">
                             <div class="text-muted ms-1 mb-1"
                                  style="font-size:0.82rem; font-style:italic;"
@@ -47,11 +47,12 @@
                                        name="caracteristicaIds"
                                        th:id="'f_' + ${nieto.id}"
                                        th:value="${nieto.id}"
-                                       th:checked="${caracteristicaIds != null and #lists.contains(caracteristicaIds, nieto.id)}" />
+                                       th:checked="${caracteristicaIds != null and #lists.contains(caracteristicaIds, nieto.id)}"/>
                                 <label class="form-check-label"
                                        th:for="'f_' + ${nieto.id}"
                                        th:text="${nieto.nombre}"
-                                       style="font-size:0.88rem;"></label>
+                                       style="font-size:0.88rem;">
+                                </label>
                             </div>
                         </div>
                     </div>
@@ -64,7 +65,6 @@
         </div>
     </form>
 
-    <!-- Resultados -->
     <div th:if="${puestos != null}">
         <h5 class="mb-3">Resultados</h5>
         <div th:if="${#lists.isEmpty(puestos)}" class="text-muted">
@@ -78,8 +78,7 @@
                       class="badge text-bg-secondary" style="font-size:0.75rem;">Privado</span>
             </div>
 
-            <p class="text-muted mb-2" style="font-size:0.85rem;"
-               th:text="${puesto.descripcion}"></p>
+            <p class="text-muted mb-2" style="font-size:0.85rem;" th:text="${puesto.descripcion}"></p>
 
             <p class="mb-2">
                 <strong>Salario:</strong>
@@ -90,7 +89,7 @@
                     (tipo de cambio no disponible)
                 </span>
             </p>
-            <!-- Características colapsables -->
+
             <div th:if="${not #lists.isEmpty(puesto.caracteristicas)}">
                 <a class="text-dark text-decoration-none"
                    style="font-size:0.88rem; cursor:pointer;"
@@ -111,7 +110,7 @@
 
         </div>
     </div>
-    <!-- Sin búsqueda aún -->
+
     <div th:if="${puestos == null}" class="text-muted">
         Seleccione características y presione <strong>Buscar</strong> para ver resultados.
     </div>

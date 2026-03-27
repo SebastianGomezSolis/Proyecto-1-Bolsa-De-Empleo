@@ -13,13 +13,11 @@
         <div class="col-md-5">
             <div class="card shadow-sm">
                 <div class="card-body p-5">
-                    <!-- Título y icono -->
                     <div class="text-center mb-4">
                         <i class="fa-solid fa-user-tie" style="color: rgb(0, 0, 0); font-size: 3rem;"></i>
                         <h2 class="mt-3">Login</h2>
                     </div>
                     <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
-                    <!-- Formulario -->
                     <form th:action="@{/ingresar}" method="post">
                         <div class="mb-3">
                             <label for="usuario" class="form-label">Usuario</label>

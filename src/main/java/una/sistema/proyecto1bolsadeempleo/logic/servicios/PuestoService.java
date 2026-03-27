@@ -17,7 +17,6 @@ import java.util.Set;
 
 @Service
 public class PuestoService {
-
     @Autowired
     private PuestoRepository puestoRepository;
 

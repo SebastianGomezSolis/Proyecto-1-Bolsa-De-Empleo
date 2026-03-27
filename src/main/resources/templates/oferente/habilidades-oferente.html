@@ -2,6 +2,7 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <!-- HEAD -->
 <div th:replace="fragmentos/head :: head"></div>
+
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <!-- NAV -->
@@ -10,10 +11,8 @@
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
     <h3 class="mb-4">Mis habilidades</h3>
-    <!-- Solo se muestra si el controlador mandó un error -->
     <div th:if="${error}" class="alert alert-warning" th:text="${error}"></div>
     <div class="row g-4">
-        <!-- Columna izquierda: tabla habilidades -->
         <div class="col-md-4">
             <table class="table table-hover table-sm">
                 <thead>
@@ -39,7 +38,7 @@
                 </tbody>
             </table>
         </div>
-        <!-- Columna central: navegador jerárquico -->
+
         <div class="col-md-4">
 
             <div class="mb-2">
@@ -71,11 +70,10 @@
                 No hay subcategorías.
             </div>
         </div>
-        <!-- Columna derecha: formulario agregar -->
+
         <div class="col-md-4">
             <div class="border rounded p-3 bg-white">
                 <h6 class="fw-bold mb-3">Agregar Habilidad</h6>
-
                 <form th:action="@{/oferente/habilidades/agregar}" method="post">
                     <div class="mb-3">
                         <label class="form-label">Característica</label>
@@ -99,7 +97,6 @@
                 </form>
             </div>
         </div>
-
     </div>
 </main>
 

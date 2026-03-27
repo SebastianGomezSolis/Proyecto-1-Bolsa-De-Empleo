@@ -23,7 +23,6 @@ import java.util.List;
 @Controller
 @RequestMapping("/oferente")
 public class OferenteController {
-
     @Autowired
     private HttpSession session;
 

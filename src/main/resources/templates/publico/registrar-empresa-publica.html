@@ -18,14 +18,11 @@
                         <img th:src="@{/images/empresas.png}" alt="Imagen de registro" class="img-fluid" style="max-width: 100px;">
                     </div>
 
-                    <!-- Mensaje de error -->
                     <div class="alert alert-danger" th:if="${error}" th:text="${error}"></div>
 
-                    <!-- Mensaje de éxito -->
                     <div class="alert alert-success" th:if="${exito}" th:text="${exito}"></div>
 
                     <form th:action="@{/empresa/registro}" th:object="${empresa}" method="post">
-
                         <div class="mb-3">
                             <label class="form-label">Nombre</label>
                             <input type="text" class="form-control" th:field="*{nombre}" required />
@@ -58,7 +55,6 @@
 
                         <button type="submit" class="btn btn-dark w-100">Registrarse</button>
                     </form>
-
                 </div>
             </div>
         </div>

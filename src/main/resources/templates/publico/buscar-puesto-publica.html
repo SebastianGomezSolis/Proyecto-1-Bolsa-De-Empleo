@@ -12,15 +12,10 @@
 
     <div class="card p-3 mb-4">
         <h5 class="mb-3">Buscar puestos por características</h5>
-
-        <!-- Formulario de búsqueda -->
         <form th:action="@{/puestos/buscar}" method="get">
-
-            <!-- Lista de características con checkboxes jerárquica -->
             <div class="border rounded p-3 mb-3" style="max-height: 300px; overflow-y: auto;">
                 <th:block th:each="raiz : ${caracteristicas}" th:if="${raiz.raiz}">
 
-                    <!-- Categoría raíz -->
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox"
                                th:id="'car-' + ${raiz.id}"
@@ -31,7 +26,6 @@
                                th:text="${raiz.nombre}">Categoría</label>
                     </div>
 
-                    <!-- Hijos de la categoría -->
                     <div class="ms-4" th:each="hijo : ${raiz.hijos}">
                         <div class="form-check">
                             <input class="form-check-input" type="checkbox"
@@ -43,7 +37,6 @@
                                    th:text="${hijo.nombre}">Hijo</label>
                         </div>
 
-                        <!-- Nietos (tercer nivel) -->
                         <div class="ms-4" th:each="nieto : ${hijo.hijos}">
                             <div class="form-check">
                                 <input class="form-check-input" type="checkbox"
@@ -60,13 +53,11 @@
                 </th:block>
             </div>
 
-            <!-- Botones -->
             <button type="submit" class="btn btn-primary">Buscar</button>
             <a class="btn btn-secondary ms-2" th:href="@{/puestos/buscar}">Limpiar</a>
         </form>
     </div>
 
-    <!-- Resultados -->
     <h5>Resultados</h5>
     <div class="row g-3">
         <div class="col-md-4" th:each="puesto : ${puestos}">
