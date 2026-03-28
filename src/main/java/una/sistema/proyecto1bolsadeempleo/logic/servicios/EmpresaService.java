@@ -36,6 +36,14 @@ public class EmpresaService {
     }
 
     public Empresa registrar(Empresa empresa) {
+        if (empresaRepository.existsByCorreo(empresa.getCorreo())) {
+            throw new RuntimeException("El correo ya existe.");
+        }
+
+        if (empresaRepository.existsByNombre(empresa.getNombre())) {
+            throw new RuntimeException("El nombre ya existe.");
+        }
+
         empresa.setAutorizado(false);
         return empresaRepository.save(empresa);
     }

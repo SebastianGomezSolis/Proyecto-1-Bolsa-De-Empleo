@@ -48,32 +48,25 @@ public class EmpresaController {
 
     @PostMapping("/registro")
     public String registroEmpresaGuardar(@ModelAttribute Empresa empresa, Model model) {
-        if (gestorDatos.getEmpresaService().findByCorreo(empresa.getCorreo()) != null) {
-            model.addAttribute("error", "El correo ya está registrado.");
+        try {
+            if (empresa.getClave() == null || empresa.getClave().isBlank()) {
+                model.addAttribute("error", "La clave es obligatoria.");
+                model.addAttribute("empresa", empresa);
+                return "publico/registrar-empresa-publica";
+            }
+
+            empresa.setClave(passwordHash.hash(empresa.getClave()));
+            gestorDatos.getEmpresaService().registrar(empresa);
+
+            model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
+            model.addAttribute("empresa", new Empresa());
+            model.addAttribute("activeNav", "regEmpresa");
+            return "publico/registrar-empresa-publica";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
             model.addAttribute("empresa", empresa);
             return "publico/registrar-empresa-publica";
         }
-
-        if (gestorDatos.getEmpresaService().findByNombre(empresa.getNombre()) != null) {
-            model.addAttribute("error", "El nombre ya está registrado.");
-            model.addAttribute("empresa", empresa);
-            return "publico/registrar-empresa-publica";
-        }
-
-        if (empresa.getClave() == null || empresa.getClave().isBlank()) {
-            model.addAttribute("error", "La clave es obligatoria.");
-            model.addAttribute("empresa", empresa);
-            return "publico/registrar-empresa-publica";
-        }
-
-        empresa.setClave(passwordHash.hash(empresa.getClave()));
-        empresa.setAutorizado(false);
-        gestorDatos.getEmpresaService().save(empresa);
-
-        model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
-        model.addAttribute("empresa", new Empresa());
-        model.addAttribute("activeNav", "regEmpresa");
-        return "publico/registrar-empresa-publica";
     }
 
     @GetMapping("/puestos")
@@ -148,7 +141,6 @@ public class EmpresaController {
             return "redirect:/empresa/puestos";
 
         } catch (IllegalArgumentException e){
-
             model.addAttribute("error", e.getMessage());
             model.addAttribute("empresa", empresa);
             model.addAttribute("raices", gestorDatos.getCaracteristicaService().findRaices());

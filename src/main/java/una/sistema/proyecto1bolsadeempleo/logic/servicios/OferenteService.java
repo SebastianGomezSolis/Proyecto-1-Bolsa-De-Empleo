@@ -23,6 +23,8 @@ public class OferenteService {
         return oferenteRepository.findByCorreo(correo).orElse(null);
     }
 
+    public Oferente findByIdentificacion(String identificacion) { return oferenteRepository.findByIdentificacion(identificacion).orElse(null); }
+
     public List<Oferente> findPendientes() {
         return oferenteRepository.findByAutorizado(false);
     }
@@ -31,7 +33,15 @@ public class OferenteService {
         return oferenteRepository.save(oferente);
     }
 
-    public Oferente registrar(Oferente oferente) {
+    public Oferente registrar(Oferente oferente) throws Exception {
+        if (oferenteRepository.existsByIdentificacion(oferente.getIdentificacion())) {
+            throw new Exception("La identificacion ya existe.");
+        }
+
+        if (oferenteRepository.existsByCorreo(oferente.getCorreo())) {
+            throw new Exception("El correo ya existe.");
+        }
+
         oferente.setAutorizado(false);
         return oferenteRepository.save(oferente);
     }

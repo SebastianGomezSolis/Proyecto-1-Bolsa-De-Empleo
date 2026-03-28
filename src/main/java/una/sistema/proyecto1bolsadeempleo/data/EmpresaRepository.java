@@ -11,5 +11,7 @@ import java.util.Optional;
 public interface EmpresaRepository extends CrudRepository<Empresa, Integer> {
     Optional<Empresa> findByCorreo(String correo);
     Optional<Empresa> findByNombre(String nombre);
+    boolean existsByCorreo(String correo);
+    boolean existsByNombre(String nombre);
     List<Empresa> findByAutorizado(boolean b);
 }

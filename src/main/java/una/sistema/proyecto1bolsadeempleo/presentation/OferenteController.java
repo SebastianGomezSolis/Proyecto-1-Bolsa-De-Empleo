@@ -2,6 +2,7 @@ package una.sistema.proyecto1bolsadeempleo.presentation;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -52,49 +53,42 @@ public class OferenteController {
 
     @PostMapping("/registro")
     public String registroOferenteGuardar(@ModelAttribute Oferente oferente, Model model) {
-        if (gestorDatos.getOferenteService().findById(oferente.getIdentificacion()) != null) {
-            model.addAttribute("error", "La identificación ya está registrada.");
+        try {
+            if (oferente.getClave() == null || oferente.getClave().isBlank()) {
+                model.addAttribute("error", "La clave es obligatoria.");
+                model.addAttribute("oferente", oferente);
+                model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+                return "publico/registrar-oferente-publica";
+            }
+
+            if (oferente.getNacionalidad() == null || oferente.getNacionalidad().isBlank()) {
+                model.addAttribute("error", "Debe seleccionar una nacionalidad.");
+                model.addAttribute("oferente", oferente);
+                model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+                return "publico/registrar-oferente-publica";
+            }
+
+            if (gestorDatos.getNacionalidadService().findByIso(oferente.getNacionalidad()) == null) {
+                model.addAttribute("error", "La nacionalidad seleccionada no es válida.");
+                model.addAttribute("oferente", oferente);
+                model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+                return "publico/registrar-oferente-publica";
+            }
+
+            oferente.setClave(passwordHash.hash(oferente.getClave()));
+            gestorDatos.getOferenteService().registrar(oferente);
+
+            model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
+            model.addAttribute("oferente", new Oferente());
+            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
+            model.addAttribute("activeNav", "regOferente");
+            return "publico/registrar-oferente-publica";
+        } catch (Exception e) {
+            model.addAttribute("error", e.getMessage());
             model.addAttribute("oferente", oferente);
             model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
             return "publico/registrar-oferente-publica";
         }
-
-        if (gestorDatos.getOferenteService().findByCorreo(oferente.getCorreo()) != null) {
-            model.addAttribute("error", "El correo ya está registrado.");
-            model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
-            return "publico/registrar-oferente-publica";
-        }
-
-        if (oferente.getClave() == null || oferente.getClave().isBlank()) {
-            model.addAttribute("error", "La clave es obligatoria.");
-            model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
-            return "publico/registrar-oferente-publica";
-        }
-
-        if (oferente.getNacionalidad() == null || oferente.getNacionalidad().isBlank()) {
-            model.addAttribute("error", "Debe seleccionar una nacionalidad.");
-            model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
-            return "publico/registrar-oferente-publica";
-        }
-
-        if (gestorDatos.getNacionalidadService().findByIso(oferente.getNacionalidad()) == null) {
-            model.addAttribute("error", "La nacionalidad seleccionada no es válida.");
-            model.addAttribute("oferente", oferente);
-            model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
-            return "publico/registrar-oferente-publica";
-        }
-
-        oferente.setClave(passwordHash.hash(oferente.getClave()));
-        gestorDatos.getOferenteService().registrar(oferente);
-
-        model.addAttribute("exito", "Registro exitoso. Espere la aprobación del administrador.");
-        model.addAttribute("oferente", new Oferente());
-        model.addAttribute("nacionalidades", gestorDatos.getNacionalidadService().findAll());
-        model.addAttribute("activeNav", "regOferente");
-        return "publico/registrar-oferente-publica";
     }
 
     @GetMapping("/habilidades")
