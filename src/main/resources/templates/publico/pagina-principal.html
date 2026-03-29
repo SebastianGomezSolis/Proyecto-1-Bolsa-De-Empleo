@@ -21,7 +21,7 @@
 
                     <p>
                         <strong>Salario:</strong>
-                        <td th:text="${#numbers.formatCurrency(puesto.salario)}"></td>
+                        <span th:text="'$' + ${#numbers.formatDecimal(puesto.salario, 1, 'POINT', 2, 'COMMA')}"></span>
                         /
                         ₡<span th:text="${#numbers.formatDecimal(puesto.salario * tipoCambio.venta, 1, 'POINT', 2, 'COMMA')}"></span>
                     </p>

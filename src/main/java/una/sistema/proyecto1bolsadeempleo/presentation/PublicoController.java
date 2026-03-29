@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import una.sistema.proyecto1bolsadeempleo.logic.ModeloDatos;
-import una.sistema.proyecto1bolsadeempleo.logic.model.Administrador;
-import una.sistema.proyecto1bolsadeempleo.logic.model.Empresa;
-import una.sistema.proyecto1bolsadeempleo.logic.model.Oferente;
-import una.sistema.proyecto1bolsadeempleo.logic.model.TipoCambio;
+import una.sistema.proyecto1bolsadeempleo.logic.model.*;
 import una.sistema.proyecto1bolsadeempleo.logic.servicios.*;
 
 import java.util.List;
@@ -27,7 +24,6 @@ public class PublicoController {
     @Autowired
     private PasswordHash passwordHash;
 
-    // ── PÁGINA PRINCIPAL ──────────────────────────────────────
     @GetMapping("/")
     public String paginaPrincipal(Model model) {
         model.addAttribute("puestos", gestorDatos.getPuestoService().findUltimos5Publicos());
@@ -38,26 +34,6 @@ public class PublicoController {
         return "publico/pagina-principal";
     }
 
-    // ── BUSCAR PUESTOS ────────────────────────────────────────
-    @GetMapping("/puestos/buscar")
-    public String buscarPuestos(
-            @RequestParam(required = false) List<Integer> caracteristicaIds,
-            Model model) {
-        model.addAttribute("caracteristicas", gestorDatos.getCaracteristicaService().findRaices());
-        if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
-            model.addAttribute("puestos", List.of());
-        } else {
-            model.addAttribute("puestos",
-                    gestorDatos.getPuestoService().findPorCaracteristicas(caracteristicaIds));
-        }
-        TipoCambioServicio tcServicio = new TipoCambioServicio();
-        TipoCambio tipoCambio = tcServicio.obtenerTipoCambio();
-        model.addAttribute("tipoCambio", tipoCambio);
-        model.addAttribute("activeNav", "buscar");
-        return "publico/buscar-puesto-publica";
-    }
-
-    // ── LOGIN ─────────────────────────────────────────────────
     @GetMapping("/ingresar")
     public String login(Model model) {
         model.addAttribute("activeNav", "login");

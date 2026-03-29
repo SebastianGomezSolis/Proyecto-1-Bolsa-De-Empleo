@@ -22,7 +22,6 @@ public class AdministradorController {
     @Autowired
     private ModeloDatos gestorDatos;
 
-    // ── DASHBOARD ─────────────────────────────
     @GetMapping("/dashboard")
     public String dashboard(Model model) {
         Administrador admin = getAdminEnSesion();
@@ -210,7 +209,7 @@ public class AdministradorController {
 
         Caracteristica cursor = actual;
         while (cursor != null) {
-            ruta.addFirst(cursor);
+            ruta.add(0, cursor);
             cursor = cursor.getPadre();
         }
 

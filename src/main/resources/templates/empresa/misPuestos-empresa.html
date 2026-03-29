@@ -26,7 +26,7 @@
         <tr th:each="puesto : ${puestos}">
             <td th:text="${puesto.id}"></td>
             <td th:text="${puesto.descripcion}"></td>
-            <td th:text="${#numbers.formatCurrency(puesto.salario)}"></td>
+            <td th:text="'$' + ${#numbers.formatDecimal(puesto.salario, 1, 'POINT', 2, 'COMMA')}"></td>
             <td>
                 <span class="badge bg-success" th:if="${puesto.activo}">Sí</span>
                 <span class="badge bg-secondary" th:unless="${puesto.activo}">No</span>
@@ -44,8 +44,12 @@
                     <button type="submit" class="btn btn-outline-success btn-sm">Activar</button>
                 </form>
 
-                <a th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}"
+                <a th:if="${puesto.activo}"
+                   th:href="@{/empresa/puestos/{id}/candidatos(id=${puesto.id})}"
                    class="btn btn-dark btn-sm">Buscar candidatos</a>
+
+                <span th:unless="${puesto.activo}"
+                      class="btn btn-secondary btn-sm disabled">Buscar candidatos</span>
             </td>
         </tr>
 

@@ -6,15 +6,16 @@
 <body class="d-flex flex-column min-vh-100 bg-light">
 
 <!-- NAV -->
-<div th:replace="fragmentos/navbar-oferente :: nav"></div>
+<div th:replace="fragmentos/navbar-publico :: nav"></div>
 
 <!-- MAIN -->
 <main class="container my-4 flex-grow-1">
     <h3 class="mb-1">Buscar puestos</h3>
     <p class="text-muted mb-4" style="font-size:0.9rem;">
-        Filtrá por características para encontrar puestos que se ajusten a tu perfil.
+        Filtrá por características para encontrar puestos disponibles.
     </p>
-    <form th:action="@{/oferente/buscar}" method="get">
+
+    <form th:action="@{/puestos/buscar}" method="get">
         <div class="border rounded p-3 bg-white mb-4">
             <h6 class="fw-bold mb-3">Buscar puestos por características</h6>
 
@@ -24,6 +25,7 @@
                     <div class="fw-semibold text-secondary mb-1"
                          style="font-size:0.88rem;"
                          th:text="${raiz.nombre}"></div>
+
                     <div th:each="hijo : ${raiz.hijos}">
 
                         <div th:if="${hijo.isHoja()}" class="form-check ms-1 mb-1">
@@ -42,6 +44,7 @@
                             <div class="text-muted ms-1 mb-1"
                                  style="font-size:0.82rem; font-style:italic;"
                                  th:text="${hijo.nombre}"></div>
+
                             <div th:each="nieto : ${hijo.hijos}" class="form-check ms-3 mb-1">
                                 <input class="form-check-input" type="checkbox"
                                        name="caracteristicaIds"
@@ -55,27 +58,30 @@
                                 </label>
                             </div>
                         </div>
+
                     </div>
                 </div>
             </div>
+
             <div class="d-flex gap-2 mt-2">
                 <button type="submit" class="btn btn-dark btn-sm">Buscar</button>
-                <a th:href="@{/oferente/buscar}" class="btn btn-outline-secondary btn-sm">Limpiar</a>
+                <a th:href="@{/puestos/buscar}" class="btn btn-outline-secondary btn-sm">Limpiar</a>
             </div>
         </div>
     </form>
 
     <div th:if="${puestos != null}">
         <h5 class="mb-3">Resultados</h5>
+
         <div th:if="${#lists.isEmpty(puestos)}" class="text-muted">
             No se encontraron puestos con las características seleccionadas.
         </div>
+
         <div th:each="puesto, iterStat : ${puestos}"
              class="border rounded bg-white p-3 mb-3">
+
             <div class="d-flex justify-content-between align-items-start mb-1">
                 <h6 class="mb-0 fw-bold" th:text="${puesto.empresa.nombre}"></h6>
-                <span th:if="${puesto.tipoPublicacion == 'privado'}"
-                      class="badge text-bg-secondary" style="font-size:0.75rem;">Privado</span>
             </div>
 
             <p class="text-muted mb-2" style="font-size:0.85rem;" th:text="${puesto.descripcion}"></p>
@@ -89,7 +95,7 @@
                     (tipo de cambio no disponible)
                 </span>
             </p>
-               <!--bootsrap js pero indirectamente, sacado de bootstrap-->
+
             <div th:if="${not #lists.isEmpty(puesto.caracteristicas)}">
                 <a class="text-dark text-decoration-none"
                    style="font-size:0.88rem; cursor:pointer;"
@@ -97,6 +103,7 @@
                    th:attr="data-bs-target='#car_' + ${iterStat.index}">
                     Ver características requeridas ▾
                 </a>
+
                 <div class="collapse mt-2" th:id="'car_' + ${iterStat.index}">
                     <div class="d-flex flex-wrap gap-1">
                         <span th:each="pc : ${puesto.caracteristicas}"
@@ -114,6 +121,7 @@
     <div th:if="${puestos == null}" class="text-muted">
         Seleccione características y presione <strong>Buscar</strong> para ver resultados.
     </div>
+
 </main>
 
 <!-- FOOTER -->
