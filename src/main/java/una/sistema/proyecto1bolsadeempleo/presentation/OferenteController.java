@@ -246,19 +246,24 @@ public class OferenteController {
         }
 
         try {
-            String carpeta = System.getProperty("user.dir") + "/uploads/curriculos/";
-
-            File directorio = new File(carpeta);
+            File directorio = new File(System.getProperty("user.dir"), "uploads/curriculos");
 
             if (!directorio.exists()) {
                 directorio.mkdirs();
             }
 
-            String rutaFisica = carpeta + oferente.getIdentificacion() + ".pdf";
-            File destino = new File(rutaFisica);
+            String idSanitizado = oferente.getIdentificacion().replaceAll("[^a-zA-Z0-9_-]", "_");
+
+            File destino = new File(directorio, idSanitizado + ".pdf");
+
+            String canonicalDir = directorio.getCanonicalPath() + File.separator;
+            if (!destino.getCanonicalPath().startsWith(canonicalDir)) {
+                throw new IOException("Ruta de archivo no permitida.");
+            }
+
             archivo.transferTo(destino);
 
-            String rutaRelativa = "/uploads/curriculos/" + oferente.getIdentificacion() + ".pdf";
+            String rutaRelativa = "/uploads/curriculos/" + idSanitizado + ".pdf";
 
             gestorDatos.getOferenteService().actualizarCurriculum(
                     oferente.getIdentificacion(),
