@@ -108,8 +108,7 @@ public class AdministradorController {
         byte[] pdf = gestorDatos.getReporteService().generarPdfPuestosPorMesYAnio(mes, anio);
 
         response.setContentType("application/pdf");
-        response.setHeader("Content-Disposition",
-                "inline; filename=reporte_puestos_" + mes + "_" + anio + ".pdf");
+        response.setHeader("Content-Disposition", "inline; filename=reporte_puestos_" + mes + "_" + anio + ".pdf");
         response.getOutputStream().write(pdf);
         response.getOutputStream().flush();
     }
