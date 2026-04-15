@@ -2,7 +2,6 @@ package una.sistema.proyecto1bolsadeempleo.presentation;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -203,9 +202,7 @@ public class OferenteController {
     }
 
     @GetMapping("/cv")
-    public String cv(
-            @RequestParam(value = "subir", required = false, defaultValue = "false") boolean mostrarSubir,
-            Model model) {
+    public String cv(@RequestParam(value = "subir", required = false, defaultValue = "false") boolean mostrarSubir, Model model) {
 
         Oferente oferente = getOferenteEnSesion();
 
@@ -265,10 +262,7 @@ public class OferenteController {
 
             String rutaRelativa = "/uploads/curriculos/" + idSanitizado + ".pdf";
 
-            gestorDatos.getOferenteService().actualizarCurriculum(
-                    oferente.getIdentificacion(),
-                    rutaRelativa
-            );
+            gestorDatos.getOferenteService().actualizarCurriculum(oferente.getIdentificacion(), rutaRelativa);
 
             Oferente actualizado = gestorDatos.getOferenteService().findById(oferente.getIdentificacion());
             session.setAttribute("oferente", actualizado);
@@ -304,8 +298,7 @@ public class OferenteController {
         if (caracteristicaIds == null || caracteristicaIds.isEmpty()) {
             model.addAttribute("puestos", null);
         } else {
-            List<Puesto> todos =
-                    gestorDatos.getPuestoService().findActivosAmbostiposPorCaracteristicas(caracteristicaIds);
+            List<Puesto> todos = gestorDatos.getPuestoService().findActivosAmbostiposPorCaracteristicas(caracteristicaIds);
             model.addAttribute("puestos", todos);
             model.addAttribute("caracteristicaIds", caracteristicaIds);
         }

@@ -30,23 +30,18 @@
                         </span>
                     </span>
                 </div>
-
                 <p class="text-muted mb-3" style="font-size:0.88rem;">
-                    Subcategorías de:
-                    <strong th:text="${actual != null ? actual.nombre : 'raíces'}"></strong>
+                    Subcategorías de: <strong th:text="${actual != null ? actual.nombre : 'raíces'}"></strong>
                 </p>
-
                 <div th:each="sub : ${subcategorias}"
                      class="d-flex justify-content-between align-items-center border rounded px-3 py-2 mb-2 bg-light">
                     <span th:text="${sub.nombre}" class="fw-semibold"></span>
                     <a th:href="@{/admin/caracteristicas(actualId=${sub.id})}"
                        class="btn btn-outline-secondary btn-sm">Entrar</a>
                 </div>
-
                 <div th:if="${#lists.isEmpty(subcategorias)}" class="text-muted" style="font-size:0.88rem;">
                     Esta categoría no tiene subcategorías.
                 </div>
-
             </div>
         </div>
 
@@ -72,14 +67,12 @@
                             </select>
                         </div>
                     </div>
-
                     <input type="hidden" name="actualId" th:value="${actual != null ? actual.id : null}" />
 
-                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <button type="submit" class="btn btn-dark">Crear</button>
                 </form>
             </div>
         </div>
-
     </div>
 </main>
 
