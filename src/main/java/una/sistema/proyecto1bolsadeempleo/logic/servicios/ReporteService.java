@@ -160,7 +160,7 @@ public class ReporteService {
         content.setNonStrokingColor(100f / 255f, 100f / 255f, 100f / 255f);
         content.setFont(italic, 9);
         content.newLineAtOffset(margin, 42);
-        content.showText("Generado automáticamente por el sistema Bolsa de Empleo");
+        content.showText("Sistema Bolsa de Empleo");
         content.endText();
     }
 
