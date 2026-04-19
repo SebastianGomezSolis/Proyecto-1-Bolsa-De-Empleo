@@ -43,7 +43,7 @@ public class Puesto {
     private Boolean activo;
 
     @NotNull
-    @Column(name = "fechaRegistro", nullable = false, updatable = false)
+    @Column(name = "fechaRegistro", nullable = false, updatable = false, columnDefinition = "TIMESTAMP")
     private Instant fechaRegistro;
 
     @PrePersist
