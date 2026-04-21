@@ -8,14 +8,6 @@ Sistema web desarrollado en Java con Spring Boot (MVC, Server Side Rendering) pa
 
 ---
 
-## 👥 Autores
-
-- Sebastián Gómez Solís — [@SebastianGomezSolis](https://github.com/SebastianGomezSolis)
-- Daniel Chacón González — [@DaniChacG05](https://github.com/DaniChacG05)
-- Julian Ramos Arias — [@JulianRamos95](https://github.com/JulianRamos95)
-
----
-
 ## 📋 Tabla de contenidos
 
 - [Descripción general](#descripción-general)
@@ -312,6 +304,10 @@ VALUES ('admin01', 'admin@bolsaempleo.local', 'tu_clave_aqui');
 ---
 
 ## Equipo de desarrollo
+
+- Sebastián Gómez Solís — [@SebastianGomezSolis](https://github.com/SebastianGomezSolis)
+- Daniel Chacón González — [@DaniChacG05](https://github.com/DaniChacG05)
+- Julian Ramos Arias — [@JulianRamos95](https://github.com/JulianRamos95)
 
 Proyecto desarrollado para el curso **EIF209 – Programación 4**, período 2026-01.
 Universidad Nacional de Costa Rica – Escuela de Informática.
